@@ -18,13 +18,16 @@ Push mirroring distributes Git branches/tags. It does not replicate issue/PR
 metadata, release assets or packages. GitHub issues/wiki/projects are disabled
 and its homepage points to Forgejo. Contributors follow CONTRIBUTING.md.
 
-Forgejo CI uses the existing disposable `k3s-one-job` runner label. It requires
+Forgejo CI uses the existing instance-wide `security` runner label. The disposable
+`k3s-one-job` runner is scoped to homelab and cannot serve this repository. CI requires
 network access for pinned tool/dependency acquisition during builds; installed
-calculation binaries have no network requirement. GitHub independently verifies
-the public mirror on Linux/Windows/macOS and compiles the Linux desktop.
-Workflows have read-only GitHub permissions and never write back to Forgejo.
+calculation binaries have no network requirement. An optional GitHub cross-platform
+and Linux desktop workflow is stored in `docs/ci/github-mirror.yml`, not activated.
+GitHub rejected workflow-file mirroring because the OAuth credential used to
+create the deploy key lacks `workflow` scope. The template can be activated on
+Forgejo after suitable GitHub workflow authorization is configured. It has
+read-only GitHub permissions and never writes back to Forgejo.
 
 Mirroring authority is a documented workflow convention, not a cryptographic
 write restriction on repository administrators. Changes made directly on GitHub
 can be overwritten by later Forgejo syncs. Never run a reverse pull mirror.
-
