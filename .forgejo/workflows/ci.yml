@@ -29,3 +29,5 @@ jobs:
           npm ci
           npm run check
           npm run build
+      - name: Compile Wails application boundary
+        run: GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -tags desktop -o desktop-check.exe ./cmd/desktop
