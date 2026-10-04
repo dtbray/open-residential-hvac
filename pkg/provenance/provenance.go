@@ -4,6 +4,14 @@ package provenance
 
 type Kind string
 
+// Methodology identifies calculation policy independently of input provenance.
+type Methodology struct {
+	ID        string `json:"id" yaml:"id"`
+	Name      string `json:"name" yaml:"name"`
+	Version   string `json:"version" yaml:"version"`
+	Reference string `json:"reference" yaml:"reference"`
+}
+
 const (
 	UserInput       Kind = "user_input"
 	Derived         Kind = "derived"

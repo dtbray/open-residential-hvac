@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/validation"
 	"os"
@@ -31,7 +31,7 @@ func run() int {
 		fmt.Fprintln(os.Stderr, err)
 		return 1
 	}
-	r, err := loads.Calculate(p.Building)
+	r, err := designload.New().Calculate(p.Building, p.Building.Design)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return 1

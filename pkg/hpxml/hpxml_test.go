@@ -3,7 +3,7 @@ package hpxml
 
 import (
 	"bytes"
-	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 	"math"
 	"os"
@@ -15,7 +15,7 @@ func TestBasicAdapter(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	p, e := project.Open("../../testdata/buildings/simple-box.json")
+	p, e := project.Open("../../testdata/designload/buildings/simple-box.json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -24,7 +24,7 @@ func TestBasicAdapter(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	r, e := loads.Calculate(imported.Building)
+	r, e := designload.New().Calculate(imported.Building, imported.Building.Design)
 	if e != nil {
 		t.Fatal(e)
 	}

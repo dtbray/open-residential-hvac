@@ -4,6 +4,18 @@ v0.1 is not declared complete. There are no committed OpenStudio-HPXML design-lo
 results, so no agreement with that oracle is claimed. There is no evidence yet
 that this simplified model meets any industry sizing accuracy requirement.
 
+Fixtures and model-specific references now live under `testdata/designload`.
+Psychrometric primitive references live under `testdata/physics`. Each comparison
+report identifies the candidate methodology independently of the reference
+generator. Future methodology suites should use their own fixtures, assumptions
+and tolerances; differing models are not required to produce identical loads.
+
+The international architecture refactor preserves all existing numerical results,
+stable node IDs, equations, inputs and source/assumption metadata across 11 fixtures.
+`pre-refactor-regression.json` stores 411 node values captured from commit
+`582d69f419c98a60fb814693bce91cd1a2148584`. This is a refactor regression baseline,
+not an independent validation oracle or an OpenStudio result.
+
 ## Tests currently available
 
 Unit conversions use absolute tolerance 1e-10 in the target numerical unit.
@@ -35,8 +47,8 @@ synthetic physical abstractions, not validated full building design studies.
 ```sh
 go run ./cmd/hvac-compare --relative 0.01 --absolute 0.5 \
   --report validation-report.json \
-  testdata/buildings/wall-conduction-only.json \
-  testdata/reference/wall-conduction-hand.json
+  testdata/designload/buildings/wall-conduction-only.json \
+  testdata/designload/reference/wall-conduction-hand.json
 ```
 
 The committed demonstration reference is a **hand calculation**, not an OpenStudio

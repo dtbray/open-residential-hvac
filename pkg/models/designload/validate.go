@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-package loads
+package designload
 
 import (
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
 	"math"
 	"sort"
 	"strings"
 
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/building"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/climate"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/envelope"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/infiltration"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/provenance"
@@ -15,27 +17,12 @@ import (
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/ventilation"
 )
 
-type DomainError struct {
-	Code    string `json:"code"`
-	Path    string `json:"path"`
-	Message string `json:"message"`
-}
-
-func (e DomainError) Error() string { return e.Path + ": " + e.Message }
-
-type ValidationErrors []DomainError
-
-func (e ValidationErrors) Error() string {
-	var lines []string
-	for _, v := range e {
-		lines = append(lines, v.Error())
+func (m *Model) Validate(b building.Building, conditions climate.DesignConditions) loads.ValidationErrors {
+	b.Design = conditions
+	var errors loads.ValidationErrors
+	add := func(path, code, msg string) {
+		errors = append(errors, loads.DomainError{Code: code, Path: path, Message: msg})
 	}
-	return strings.Join(lines, "\n")
-}
-
-func Validate(b building.Building) ValidationErrors {
-	var errors ValidationErrors
-	add := func(path, code, msg string) { errors = append(errors, DomainError{code, path, msg}) }
 	ids := map[string]bool{}
 	id := func(path, v string) {
 		if v == "" || strings.Contains(v, "/") {
@@ -177,6 +164,9 @@ func Validate(b building.Building) ValidationErrors {
 					add(sp+".tilt_degrees", "invalid_orientation", "tilt must be within 0..180 degrees")
 				}
 				switch s.Adjacent {
+				case building.UnconditionedSpace, building.AdjacentBuilding:
+					temp(sp+".heating_adjacent_db_c", s.HeatingAdjacentDB)
+					temp(sp+".cooling_adjacent_db_c", s.CoolingAdjacentDB)
 				case building.Outdoors, building.Conditioned:
 					if s.HeatingAdjacentDB != nil || s.CoolingAdjacentDB != nil {
 						add(sp, "conflicting_boundary", "outdoor and conditioned surfaces cannot override boundary temperatures")
@@ -188,6 +178,9 @@ func Validate(b building.Building) ValidationErrors {
 					temp(sp+".cooling_adjacent_db_c", s.CoolingAdjacentDB)
 				default:
 					add(sp, "unsupported_adjacency", "unknown adjacency "+string(s.Adjacent))
+				}
+				if s.Azimuth != nil && (!units.Finite(float64(*s.Azimuth)) || *s.Azimuth < 0 || *s.Azimuth >= 360) {
+					add(sp+".azimuth_degrees", "invalid_orientation", "azimuth must be finite and within [0,360) degrees clockwise from true north")
 				}
 				evidence(sp+".evidence", s.Evidence)
 			}
@@ -249,6 +242,18 @@ func Validate(b building.Building) ValidationErrors {
 	// Overflow in accumulated volume is also an invalid engineering input.
 	if math.IsInf(float64(volume), 0) {
 		add("building.volume", "invalid_quantity", "aggregate volume overflow")
+	}
+	if a := b.Infiltration.Airtightness; a != nil {
+		if a.AirChangesPerHour == nil {
+			add("infiltration.airtightness.air_changes_per_hour", "missing_input", "explicit air-change measurement required, including zero")
+		} else {
+			nonnegative("infiltration.airtightness.air_changes_per_hour", float64(*a.AirChangesPerHour))
+		}
+		positive("infiltration.airtightness.test_pressure_pa", float64(a.TestPressure))
+		evidence("infiltration.airtightness.evidence", map[string]provenance.Evidence{"measurement": a.Evidence})
+	}
+	if b.Ventilation.HeatRecovery != nil {
+		add("ventilation.heat_recovery", "unsupported_heat_recovery", "heat-recovery properties are preserved but the designload model does not calculate recovery effects")
 	}
 	sort.SliceStable(errors, func(i, j int) bool {
 		return errors[i].Path+errors[i].Code+errors[i].Message < errors[j].Path+errors[j].Code+errors[j].Message

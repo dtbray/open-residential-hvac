@@ -37,17 +37,18 @@ type RoomResult struct {
 }
 
 type Result struct {
-	Model           string         `json:"model"`
-	HeatingLoad     units.HeatFlow `json:"heating_load_w"`
-	CoolingSensible units.HeatFlow `json:"cooling_sensible_w"`
-	CoolingLatent   units.HeatFlow `json:"cooling_latent_w"`
-	CoolingLoad     units.HeatFlow `json:"cooling_load_w"`
-	Heating         ResultNode     `json:"heating"`
-	Cooling         ResultNode     `json:"cooling"`
-	Rooms           []RoomResult   `json:"rooms"`
+	Methodology     provenance.Methodology `json:"methodology"`
+	Model           string                 `json:"model"`
+	HeatingLoad     units.HeatFlow         `json:"heating_load_w"`
+	CoolingSensible units.HeatFlow         `json:"cooling_sensible_w"`
+	CoolingLatent   units.HeatFlow         `json:"cooling_latent_w"`
+	CoolingLoad     units.HeatFlow         `json:"cooling_load_w"`
+	Heating         ResultNode             `json:"heating"`
+	Cooling         ResultNode             `json:"cooling"`
+	Rooms           []RoomResult           `json:"rooms"`
 }
 
-func aggregate(id, name string, children ...ResultNode) ResultNode {
+func Aggregate(id, name string, children ...ResultNode) ResultNode {
 	n := ResultNode{ID: id, Name: name, Method: "explicit aggregation", Equation: "Q = sum(children)", Children: children}
 	for _, c := range children {
 		n.Value += c.Value
@@ -57,14 +58,14 @@ func aggregate(id, name string, children ...ResultNode) ResultNode {
 	return n
 }
 
-func input(name string, v float64, unit string, e provenance.Evidence) InputValue {
+func Input(name string, v float64, unit string, e provenance.Evidence) InputValue {
 	if !e.Source.Valid() {
 		e.Source = provenance.Source{Kind: provenance.UserInput, Reference: "project input: " + name}
 	}
 	return InputValue{Name: name, Value: v, Unit: unit, Source: e.Source, Assumptions: e.Assumptions}
 }
 
-func leaf(id, name, method, equation string, v units.HeatFlow, in ...InputValue) ResultNode {
+func Leaf(id, name, method, equation string, v units.HeatFlow, in ...InputValue) ResultNode {
 	n := ResultNode{ID: id, Name: name, Value: v, Method: method, Equation: equation, Inputs: in}
 	for _, i := range in {
 		n.Sources = append(n.Sources, i.Source)

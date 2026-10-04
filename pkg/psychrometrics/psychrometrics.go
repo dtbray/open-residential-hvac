@@ -5,6 +5,7 @@ package psychrometrics
 
 import (
 	"fmt"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/units"
 	"math"
 )
 
@@ -12,6 +13,12 @@ const DryAirGasConstant = 287.042 // J/(kg K), PsychroLib SI
 const DryAirSpecificHeat = 1006.0 // J/(kg K)
 const VapourSpecificHeat = 1860.0 // J/(kg K)
 const LatentHeat = 2501000.0      // J/kg, zero-C enthalpy convention
+
+// MoistAirSpecificHeat is the temperature derivative of the adopted moist-air
+// enthalpy correlation at fixed humidity ratio, per kg of dry air.
+func MoistAirSpecificHeat(w units.HumidityRatio) units.SpecificHeat {
+	return units.SpecificHeat(DryAirSpecificHeat + VapourSpecificHeat*float64(w))
+}
 
 func SaturationPressure(t float64) (float64, error) {
 	if math.IsNaN(t) || math.IsInf(t, 0) || t < -100 || t > 200 {

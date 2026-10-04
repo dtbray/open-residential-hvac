@@ -3,14 +3,14 @@ package validation
 
 import (
 	"encoding/json"
-	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 	"os"
 	"testing"
 )
 
 func TestReferenceComparison(t *testing.T) {
-	data, e := os.ReadFile("../../testdata/buildings/wall-conduction-only.json")
+	data, e := os.ReadFile("../../testdata/designload/buildings/wall-conduction-only.json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -18,11 +18,11 @@ func TestReferenceComparison(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	r, e := loads.Calculate(p.Building)
+	r, e := designload.New().Calculate(p.Building, p.Building.Design)
 	if e != nil {
 		t.Fatal(e)
 	}
-	b, e := os.ReadFile("../../testdata/reference/wall-conduction-hand.json")
+	b, e := os.ReadFile("../../testdata/designload/reference/wall-conduction-hand.json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -31,6 +31,9 @@ func TestReferenceComparison(t *testing.T) {
 		t.Fatal(e)
 	}
 	report, e := Compare(r, data, ref, 0, 1e-8)
+	if e == nil && report.Methodology != r.Methodology {
+		t.Fatal("comparison report lost calculation methodology")
+	}
 	if e != nil || !report.Pass || len(report.Differences) != 6 {
 		t.Fatal("hand comparison failed", e)
 	}
@@ -49,7 +52,7 @@ func TestReferenceComparison(t *testing.T) {
 }
 
 func TestOutdoorAirReference(t *testing.T) {
-	data, e := os.ReadFile("../../testdata/buildings/leaky-house.json")
+	data, e := os.ReadFile("../../testdata/designload/buildings/leaky-house.json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -57,11 +60,11 @@ func TestOutdoorAirReference(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	r, e := loads.Calculate(p.Building)
+	r, e := designload.New().Calculate(p.Building, p.Building.Design)
 	if e != nil {
 		t.Fatal(e)
 	}
-	raw, e := os.ReadFile("../../testdata/reference/leaky-house-psychrolib.json")
+	raw, e := os.ReadFile("../../testdata/designload/reference/leaky-house-psychrolib.json")
 	if e != nil {
 		t.Fatal(e)
 	}

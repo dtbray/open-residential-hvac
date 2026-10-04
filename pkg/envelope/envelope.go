@@ -4,6 +4,7 @@ package envelope
 import (
 	"fmt"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/building"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/physics"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/units"
 )
 
@@ -32,5 +33,5 @@ func Transmittance(a building.Assembly) (units.Transmittance, error) {
 
 // Conduction is signed; aggregation policy belongs to the load model.
 func Conduction(u units.Transmittance, a units.Area, deltaC float64) units.HeatFlow {
-	return units.HeatFlow(float64(u) * float64(a) * deltaC)
+	return physics.Conduction(u, a, units.TemperatureDifference(deltaC))
 }

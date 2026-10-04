@@ -4,14 +4,14 @@ package app
 import (
 	"bytes"
 	"encoding/json"
-	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 	"os"
 	"testing"
 )
 
 func TestDesktopServiceMatchesLibrary(t *testing.T) {
-	b, e := os.ReadFile("../testdata/buildings/multi-room-ranch.json")
+	b, e := os.ReadFile("../testdata/designload/buildings/multi-room-ranch.json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -19,7 +19,7 @@ func TestDesktopServiceMatchesLibrary(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	want, e := loads.Calculate(p.Building)
+	want, e := designload.New().Calculate(p.Building, p.Building.Design)
 	if e != nil {
 		t.Fatal(e)
 	}
