@@ -178,7 +178,7 @@ func Calculate(b building.Building) (*Result, error) {
 				return leaf(prefix+"/cooling/"+kind+"/internal/"+key, name, "explicit design internal gain", "Q = explicit heat gain", q, input(r.ID+"."+key, float64(q), "W", r.Evidence[key]))
 			}
 			occupant := func(kind string, q units.HeatFlow) ResultNode {
-				return leaf(prefix+"/cooling/"+kind+"/internal/occupants", "Occupants", "user-specified per-person design gain", "Q = occupants × per_person_gain", units.HeatFlow(float64(r.Occupants)*float64(q)), input(r.ID+".occupants", float64(r.Occupants), "people", r.Evidence["occupants"]), input(r.ID+".occupant_"+kind, float64(q), "W/person", r.Evidence["occupant_"+kind+"_w_per_person"]))
+				return leaf(prefix+"/cooling/"+kind+"/internal/occupants", "Occupants", "user-specified per-person design gain", "Q = occupants × per_person_gain", units.HeatFlow(float64(*r.Occupants)*float64(q)), input(r.ID+".occupants", float64(*r.Occupants), "people", r.Evidence["occupants"]), input(r.ID+".occupant_"+kind, float64(q), "W/person", r.Evidence["occupant_"+kind+"_w_per_person"]))
 			}
 			h := aggregate(prefix+"/heating", r.Name+" heating", aggregate(prefix+"/heating/envelope", "Envelope", heatEnvelope...), hair, hvent)
 			cs := aggregate(prefix+"/cooling/sensible", r.Name+" cooling sensible", aggregate(prefix+"/cooling/sensible/envelope", "Envelope", coolEnvelope...), aggregate(prefix+"/cooling/sensible/solar", "Solar", solarNodes...), cair, cvent, aggregate(prefix+"/cooling/sensible/internal", "Internal gains", occupant("sensible", *r.OccupantSensible), internal("sensible", "Lighting", "lighting_w", *r.Lighting), internal("sensible", "Other sensible gains", "internal_sensible_w", *r.InternalSensible)))

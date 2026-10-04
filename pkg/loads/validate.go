@@ -149,7 +149,9 @@ func Validate(b building.Building) ValidationErrors {
 			volume += r.Volume
 			positive(p+".floor_area_m2", float64(r.FloorArea))
 			positive(p+".volume_m3", float64(r.Volume))
-			if r.Occupants < 0 {
+			if r.Occupants == nil {
+				add(p+".occupants", "missing_input", "explicit occupant count required, including zero")
+			} else if *r.Occupants < 0 {
 				add(p+".occupants", "invalid_quantity", "occupants must be nonnegative")
 			}
 			heat(p+".occupant_sensible", r.OccupantSensible)

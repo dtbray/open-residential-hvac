@@ -164,3 +164,11 @@ func BenchmarkRanch(b *testing.B) {
 		}
 	}
 }
+
+func TestMissingOccupancyIsNotZero(t *testing.T) {
+	b := fixture(t, "simple-box")
+	b.Zones[0].Rooms[0].Occupants = nil
+	if _, err := Calculate(b); err == nil {
+		t.Fatal("missing occupant count silently treated as zero")
+	}
+}

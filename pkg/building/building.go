@@ -36,7 +36,7 @@ type Room struct {
 	Name             string                         `json:"name" yaml:"name"`
 	FloorArea        units.Area                     `json:"floor_area_m2" yaml:"floor_area_m2"`
 	Volume           units.Volume                   `json:"volume_m3" yaml:"volume_m3"`
-	Occupants        int                            `json:"occupants" yaml:"occupants"`
+	Occupants        *int                           `json:"occupants" yaml:"occupants"`
 	OccupantSensible *units.HeatFlow                `json:"occupant_sensible_w_per_person" yaml:"occupant_sensible_w_per_person"`
 	OccupantLatent   *units.HeatFlow                `json:"occupant_latent_w_per_person" yaml:"occupant_latent_w_per_person"`
 	Lighting         *units.HeatFlow                `json:"lighting_w" yaml:"lighting_w"`
