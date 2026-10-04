@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+  pull_request:
+concurrency:
+  group: hvac-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: k3s-one-job
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.26'
+          cache: false
+      - name: Check Go
+        run: |
+          test -z "$(gofmt -l pkg app/*.go cmd internal)"
+          go vet ./...
+          go test -race ./...
+          go build ./cmd/hvac ./cmd/hvac-compare
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Check desktop frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npm run check
+          npm run build
+

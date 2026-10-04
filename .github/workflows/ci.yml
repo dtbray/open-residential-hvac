@@ -1,0 +1,40 @@
+name: Public mirror verification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  engine:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.26'
+      - run: go vet ./...
+      - run: go test -race ./...
+      - run: go build ./cmd/hvac ./cmd/hvac-compare
+  desktop-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.26'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Native desktop prerequisites
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libgtk-3-dev libwebkit2gtk-4.1-dev
+      - name: Frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npm run check
+          npm run build
+      - run: go build -tags 'desktop,webkit2_41' -o open-residential-hvac ./cmd/desktop
+

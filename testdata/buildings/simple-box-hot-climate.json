@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "building": {
+    "id": "house",
+    "name": "Simple Box",
+    "location": {
+      "description": "Synthetic fixture, not a geographic design recommendation"
+    },
+    "design": {
+      "heating": {
+        "outdoor_db_c": -15,
+        "indoor_db_c": 20
+      },
+      "cooling": {
+        "outdoor_db_c": 42,
+        "outdoor_rh_fraction": 0.5,
+        "indoor_db_c": 24,
+        "indoor_rh_fraction": 0.5
+      },
+      "pressure_pa": 101325,
+      "evidence": {}
+    },
+    "assemblies": [
+      {
+        "id": "wall",
+        "name": "Explicit wall U",
+        "u_factor_w_m2_k": 0.4,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      },
+      {
+        "id": "glass",
+        "name": "Explicit glazing U",
+        "u_factor_w_m2_k": 2,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    ],
+    "infiltration": {
+      "mode": "explicit",
+      "airflow_m3_s": 0,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "ventilation": {
+      "airflow_m3_s": 0,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "zones": [
+      {
+        "id": "main",
+        "name": "Main",
+        "rooms": [
+          {
+            "id": "living",
+            "name": "Living Room",
+            "floor_area_m2": 30,
+            "volume_m3": 75,
+            "occupants": 0,
+            "occupant_sensible_w_per_person": 0,
+            "occupant_latent_w_per_person": 0,
+            "lighting_w": 0,
+            "internal_sensible_w": 0,
+            "internal_latent_w": 0,
+            "walls": [
+              {
+                "id": "living-west",
+                "name": "living-west",
+                "area_m2": 20,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "windows": [],
+            "doors": [],
+            "floors": [],
+            "ceilings": [],
+            "evidence": {
+              "volume_m3": {
+                "source": {
+                  "kind": "user_input",
+                  "reference": "synthetic validation fixture"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

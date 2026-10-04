@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic mapping fixture; not asserted to be a full XSD-valid HPXML file. -->
+<HPXML xmlns="http://hpxmlonline.com/2023/09" schemaVersion="4.0">
+  <Building>
+    <BuildingID id="synthetic-home"/>
+    <BuildingDetails>
+      <BuildingSummary><BuildingConstruction><ConditionedFloorArea>320</ConditionedFloorArea><ConditionedBuildingVolume>2560</ConditionedBuildingVolume></BuildingConstruction></BuildingSummary>
+      <Enclosure>
+        <Walls><Wall><SystemIdentifier id="west-wall"/><InteriorAdjacentTo>conditioned space</InteriorAdjacentTo><ExteriorAdjacentTo>outside</ExteriorAdjacentTo><Area>180</Area><Insulation><AssemblyEffectiveRValue>14</AssemblyEffectiveRValue></Insulation></Wall></Walls>
+        <Windows><Window><SystemIdentifier id="west-glass"/><Area>30</Area><UFactor>0.3</UFactor><SHGC>0.4</SHGC><AttachedToWall idref="west-wall"/></Window></Windows>
+      </Enclosure>
+    </BuildingDetails>
+  </Building>
+</HPXML>
+

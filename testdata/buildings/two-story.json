@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "building": {
+    "id": "house",
+    "name": "Example Ranch",
+    "location": {
+      "description": "Synthetic fixture, not a geographic design recommendation"
+    },
+    "design": {
+      "heating": {
+        "outdoor_db_c": -15,
+        "indoor_db_c": 20
+      },
+      "cooling": {
+        "outdoor_db_c": 35,
+        "outdoor_rh_fraction": 0.5,
+        "indoor_db_c": 24,
+        "indoor_rh_fraction": 0.5
+      },
+      "pressure_pa": 101325,
+      "evidence": {}
+    },
+    "assemblies": [
+      {
+        "id": "wall",
+        "name": "Explicit wall U",
+        "u_factor_w_m2_k": 0.4,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      },
+      {
+        "id": "glass",
+        "name": "Explicit glazing U",
+        "u_factor_w_m2_k": 2,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    ],
+    "infiltration": {
+      "mode": "ach_natural",
+      "ach": 0.3,
+      "evidence": {
+        "ach": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "ventilation": {
+      "airflow_m3_s": 0.015,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "zones": [
+      {
+        "id": "main",
+        "name": "Main",
+        "rooms": [
+          {
+            "id": "living",
+            "name": "Living Room",
+            "floor_area_m2": 30,
+            "volume_m3": 75,
+            "occupants": 1,
+            "occupant_sensible_w_per_person": 70,
+            "occupant_latent_w_per_person": 45,
+            "lighting_w": 50,
+            "internal_sensible_w": 80,
+            "internal_latent_w": 10,
+            "walls": [
+              {
+                "id": "living-west",
+                "name": "living-west",
+                "area_m2": 20,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "windows": [
+              {
+                "id": "living-window",
+                "name": "living-window",
+                "area_m2": 3,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "glass",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "shgc": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "incident_solar_w_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "shading_factor": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                },
+                "parent_surface": "living-west",
+                "shgc": 0.4,
+                "incident_solar_w_m2": 350,
+                "shading_factor": 0.8
+              }
+            ],
+            "doors": [
+              {
+                "id": "living-door",
+                "name": "living-door",
+                "area_m2": 2,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                },
+                "parent_surface": "living-west"
+              }
+            ],
+            "floors": [
+              {
+                "id": "living-floor",
+                "name": "living-floor",
+                "area_m2": 30,
+                "orientation": "west",
+                "tilt_degrees": 180,
+                "adjacent": "conditioned",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "ceilings": [
+              {
+                "id": "living-ceiling",
+                "name": "living-ceiling",
+                "area_m2": 30,
+                "orientation": "west",
+                "tilt_degrees": 0,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "evidence": {
+              "volume_m3": {
+                "source": {
+                  "kind": "user_input",
+                  "reference": "synthetic validation fixture"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "upper",
+        "name": "Upper Zone",
+        "rooms": [
+          {
+            "id": "bedroom",
+            "name": "Bedroom",
+            "floor_area_m2": 15,
+            "volume_m3": 37.5,
+            "occupants": 1,
+            "occupant_sensible_w_per_person": 70,
+            "occupant_latent_w_per_person": 45,
+            "lighting_w": 50,
+            "internal_sensible_w": 80,
+            "internal_latent_w": 10,
+            "walls": [
+              {
+                "id": "bedroom-west",
+                "name": "bedroom-west",
+                "area_m2": 20,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "windows": [
+              {
+                "id": "bedroom-window",
+                "name": "bedroom-window",
+                "area_m2": 3,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "glass",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "shgc": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "incident_solar_w_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  },
+                  "shading_factor": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                },
+                "parent_surface": "bedroom-west",
+                "shgc": 0.4,
+                "incident_solar_w_m2": 350,
+                "shading_factor": 0.8
+              }
+            ],
+            "doors": [
+              {
+                "id": "bedroom-door",
+                "name": "bedroom-door",
+                "area_m2": 2,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                },
+                "parent_surface": "bedroom-west"
+              }
+            ],
+            "floors": [
+              {
+                "id": "bedroom-floor",
+                "name": "bedroom-floor",
+                "area_m2": 15,
+                "orientation": "west",
+                "tilt_degrees": 180,
+                "adjacent": "conditioned",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "ceilings": [
+              {
+                "id": "bedroom-ceiling",
+                "name": "bedroom-ceiling",
+                "area_m2": 15,
+                "orientation": "west",
+                "tilt_degrees": 0,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "evidence": {
+              "volume_m3": {
+                "source": {
+                  "kind": "user_input",
+                  "reference": "synthetic validation fixture"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

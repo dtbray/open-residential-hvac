@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "generator": "PsychroLib JavaScript air properties plus explicit airflow mass/enthalpy differences",
+  "generator_version": "2.5.0 fca789d70d61aa4a4b5b6594d3e7299a7f4c86db",
+  "fixture_sha256": "13d95bfff30f5921eb1510fa4748b9dd4c1fd56b90fc76693f6bd6274a359edb",
+  "source_files": [
+    "https://github.com/psychrometrics/psychrolib/blob/fca789d70d61aa4a4b5b6594d3e7299a7f4c86db/src/js/psychrolib.js"
+  ],
+  "notes": "Independent PsychroLib oracle execution, not OpenStudio. Flow=75/3600 m3/s. Heating uses dry-air properties; cooling sensible uses enthalpy difference at fixed indoor humidity; latent uses humidity enthalpy difference at zero C.",
+  "metrics_w": {
+    "heating_load_w": 1163.2955738479977,
+    "cooling_sensible_w": 362.47505855034956,
+    "cooling_latent_w": 516.3585365564063,
+    "cooling_load_w": 878.8335951067559,
+    "room/living/heating/infiltration": 883.2955738479976,
+    "room/living/cooling/sensible/infiltration": 274.47505855034956,
+    "room/living/cooling/latent/infiltration": 516.3585365564063
+  }
+}

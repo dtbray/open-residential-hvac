@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "generator": "independent hand calculation",
+  "generator_version": "1",
+  "fixture_sha256": "cb5a060297cda8ea287e6c67c4cc6cea4e5edff3af7f69f50454fdac0613db18",
+  "source_files": [
+    "docs/methodology.md"
+  ],
+  "notes": "Not OpenStudio output. U=0.4 W/m2K, A=20 m2; heating delta=35 K, cooling delta=11 K; all air/internal/solar terms zero.",
+  "metrics_w": {
+    "heating_load_w": 280,
+    "cooling_sensible_w": 88,
+    "cooling_latent_w": 0,
+    "cooling_load_w": 88,
+    "room/living/heating/envelope/living-west": 280,
+    "room/living/cooling/sensible/envelope/living-west": 88
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "generator": "PsychroLib 2.5.0 JavaScript",
+  "commit": "fca789d70d61aa4a4b5b6594d3e7299a7f4c86db",
+  "source_sha256": "c1622038dfd28fbbf5ad1a197fc30eac43f6bf94f4f85e946913a0ad239f7b59",
+  "rh_cases": [
+    {
+      "db_c": 25,
+      "rh": 0.5,
+      "p_pa": 101325,
+      "humidity_ratio": 0.009881043690749623,
+      "saturation_pa": 3169.2164701436277
+    },
+    {
+      "db_c": 35,
+      "rh": 0.8,
+      "p_pa": 101325,
+      "humidity_ratio": 0.028920429271636326,
+      "saturation_pa": 5627.819446540259
+    },
+    {
+      "db_c": -10,
+      "rh": 0.6,
+      "p_pa": 90000,
+      "humidity_ratio": 0.0010795056931003466,
+      "saturation_pa": 259.9028649521791
+    },
+    {
+      "db_c": 0,
+      "rh": 0.5,
+      "p_pa": 101325,
+      "humidity_ratio": 0.0018813407142523372,
+      "saturation_pa": 611.1535708907679
+    },
+    {
+      "db_c": 24,
+      "rh": 0.5,
+      "p_pa": 101325,
+      "humidity_ratio": 0.009298505175220014,
+      "saturation_pa": 2985.1270679375657
+    }
+  ],
+  "wb_cases": [
+    {
+      "db_c": 35,
+      "wb_c": 24,
+      "p_pa": 101325,
+      "humidity_ratio": 0.01423451554019298
+    },
+    {
+      "db_c": 20,
+      "wb_c": 15,
+      "p_pa": 101325,
+      "humidity_ratio": 0.008575466680271449
+    },
+    {
+      "db_c": -5,
+      "wb_c": -7,
+      "p_pa": 90000,
+      "humidity_ratio": 0.001633229417318683
+    },
+    {
+      "db_c": 32.7777778,
+      "wb_c": 23.3333333,
+      "p_pa": 101325,
+      "humidity_ratio": 0.014130015547453982
+    }
+  ]
+}
