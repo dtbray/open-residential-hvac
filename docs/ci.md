@@ -6,6 +6,9 @@ GitHub credential. Action revisions, oracle archives and scanner versions are pi
 
 ## Pull requests and pushes
 
+PR updates and main pushes run one verification path; manual dispatch can check
+other branches without duplicating every feature-branch PR run.
+
 `CI / verify` checks formatting, vet, race tests, numerical/serialization regressions,
 CLI process workflows, frontend types and assets, stored reference comparisons,
 and a **runnable production** Linux desktop. Native acceptance uses a virtual X
