@@ -31,3 +31,7 @@ read-only GitHub permissions and never writes back to Forgejo.
 Mirroring authority is a documented workflow convention, not a cryptographic
 write restriction on repository administrators. Changes made directly on GitHub
 can be overwritten by later Forgejo syncs. Never run a reverse pull mirror.
+
+PR, scheduled validation, and native packaging workflows are documented in
+[CI gates](ci.md). Only the Linux runner is currently available; all-platform
+release dispatch fails explicitly until native Windows/macOS labels are configured.

@@ -1,0 +1,165 @@
+{
+  "methodology": {
+    "id": "designload",
+    "name": "Open Design Load",
+    "version": "0.1",
+    "reference": "docs/methodology.md#designload-01"
+  },
+  "reference_generator": "OpenStudio-HPXML",
+  "reference_generator_version": "1.12.0 / OpenStudio 3.11.0+241b8abb4d",
+  "fixture_sha256": "9c78c725a7dcb9f4e766bd9e1fdb63753a55a35be38bf021bad8a91c37de7002",
+  "relative_tolerance": 0.01,
+  "absolute_tolerance_w": 0.5,
+  "differences": [
+    {
+      "metric": "cooling_latent_w",
+      "reference_w": 203.39132269952222,
+      "candidate_w": 359.875613782675,
+      "difference_w": 156.48429108315275,
+      "relative_difference": 0.7693754532209468,
+      "pass": false
+    },
+    {
+      "metric": "cooling_load_w",
+      "reference_w": 2793.2603698114503,
+      "candidate_w": 4020.93277107238,
+      "difference_w": 1227.6724012609297,
+      "relative_difference": 0.43951233996270805,
+      "pass": false
+    },
+    {
+      "metric": "cooling_sensible_w",
+      "reference_w": 2589.869047111928,
+      "candidate_w": 3661.057157289705,
+      "difference_w": 1071.1881101777772,
+      "relative_difference": 0.41360705529582825,
+      "pass": false
+    },
+    {
+      "metric": "heating_load_w",
+      "reference_w": 766.9669906407056,
+      "candidate_w": 766.3529630733733,
+      "difference_w": -0.6140275673323004,
+      "relative_difference": -0.0008005919092024503,
+      "pass": true
+    },
+    {
+      "metric": "room/block/cooling/latent/infiltration",
+      "reference_w": -31.065533438255557,
+      "candidate_w": 125.4187576448972,
+      "difference_w": 156.48429108315275,
+      "relative_difference": 5.037231740899406,
+      "pass": false
+    },
+    {
+      "metric": "room/block/cooling/latent/internal",
+      "reference_w": 234.45685613777778,
+      "candidate_w": 234.45685613777778,
+      "difference_w": 0,
+      "relative_difference": 0,
+      "pass": true
+    },
+    {
+      "metric": "room/block/cooling/latent/ventilation",
+      "reference_w": 0,
+      "candidate_w": 0,
+      "difference_w": 0,
+      "pass": true
+    },
+    {
+      "metric": "room/block/cooling/sensible/envelope/Door1",
+      "reference_w": 58.90728510461667,
+      "candidate_w": 44.1471602977611,
+      "difference_w": -14.760124806855572,
+      "relative_difference": -0.25056535504296723,
+      "pass": false
+    },
+    {
+      "metric": "room/block/cooling/sensible/envelope/Wall1",
+      "reference_w": 206.32203340124445,
+      "candidate_w": 232.07014731327038,
+      "difference_w": 25.74811391202593,
+      "relative_difference": 0.12479575490588697,
+      "pass": false
+    },
+    {
+      "metric": "room/block/cooling/sensible/infiltration",
+      "reference_w": 159.13759110351666,
+      "candidate_w": 189.33588769533674,
+      "difference_w": 30.198296591820082,
+      "relative_difference": 0.1897621824134345,
+      "pass": false
+    },
+    {
+      "metric": "room/block/cooling/sensible/internal",
+      "reference_w": 972.9959529717778,
+      "candidate_w": 972.9959529717778,
+      "difference_w": 0,
+      "relative_difference": 0,
+      "pass": true
+    },
+    {
+      "metric": "room/block/cooling/sensible/ventilation",
+      "reference_w": 0,
+      "candidate_w": 0,
+      "difference_w": 0,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/envelope/Door1",
+      "reference_w": 38.09923912238889,
+      "candidate_w": 38.15252477151111,
+      "difference_w": 0.05328564912222333,
+      "relative_difference": 0.0013986013986014279,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/envelope/Wall1",
+      "reference_w": 200.46061199780002,
+      "candidate_w": 200.55790642884926,
+      "difference_w": 0.0972944310492494,
+      "relative_difference": 0.00048535435505064293,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/envelope/Window1",
+      "reference_w": 103.74715884096666,
+      "candidate_w": 103.70237758144434,
+      "difference_w": -0.044781259522324035,
+      "relative_difference": -0.0004316384180791778,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/envelope/Window2",
+      "reference_w": 103.74715884096666,
+      "candidate_w": 103.70237758144434,
+      "difference_w": -0.044781259522324035,
+      "relative_difference": -0.0004316384180791778,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/envelope/Window3",
+      "reference_w": 155.32766719127778,
+      "candidate_w": 155.4066791517962,
+      "difference_w": 0.07901196051841453,
+      "relative_difference": 0.0005086792452829121,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/infiltration",
+      "reference_w": 165.58515464730556,
+      "candidate_w": 164.83109755832797,
+      "difference_w": -0.7540570889775893,
+      "relative_difference": -0.004553893074434856,
+      "pass": true
+    },
+    {
+      "metric": "room/block/heating/ventilation",
+      "reference_w": 0,
+      "candidate_w": 0,
+      "difference_w": 0,
+      "pass": true
+    }
+  ],
+  "pass": false
+}

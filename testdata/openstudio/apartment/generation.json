@@ -1,0 +1,18 @@
+{
+  "generator": "OpenStudio-HPXML",
+  "version": "1.12.0",
+  "sdk": "3.11.0+241b8abb4d",
+  "lock": "tools/oracle-lock.json",
+  "schema_validation": true,
+  "schematron_validation": true,
+  "annual_simulation": false,
+  "input_sha256": "58fdae943bbd92f5e2af16a25ff86e12faaff1f19bc3e0b6020d6342823169fd",
+  "resolved_sha256": "f7ac38b0c1472c00fadfbbb4b47b9b869a59c4745de56c39769f7afe0c6fa2fa",
+  "oracle_sha256": "e778151e87f7959c383cc943a816eef235365d7369ac6d67eb577d71146924e3",
+  "weather_file": "USA_CO_Denver.Intl.AP.725650_TMY3.epw",
+  "weather_sha256": "6aacee75402057baefa50d14873d07b70e33c535d3aded200f4393bf2ae6077d",
+  "source": "OpenStudio-HPXML-v1.12.0.zip workflow/sample_files/base-bldgtype-mf-unit.xml",
+  "modifications": [],
+  "command": "openstudio workflow/run_simulation.rb -x INPUT.xml -o OUTPUT --skip-simulation --output-format json",
+  "license": "../LICENSE.upstream.md"
+}

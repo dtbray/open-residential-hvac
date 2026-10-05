@@ -36,5 +36,5 @@ jobs:
           npm ci
           npm run check
           npm run build
-      - run: go build -tags 'desktop,webkit2_41' -o open-residential-hvac ./cmd/desktop
+      - run: go build -tags 'desktop,production,webkit2_41' -o open-residential-hvac ./cmd/desktop
 

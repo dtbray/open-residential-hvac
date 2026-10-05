@@ -27,3 +27,8 @@ THE SOFTWARE.
 
 Other dependencies are listed in go.mod and app/frontend/package-lock.json.
 Original project code is AGPL-3.0-only; upstream notices retain their own terms.
+
+Pinned apartment validation fixtures derive from OpenStudio-HPXML 1.12.0. Their
+upstream copyright/license is retained in testdata/openstudio/LICENSE.upstream.md.
+These validation-only fixtures and generated outputs do not copy coefficient
+tables or calculation code into the engine.

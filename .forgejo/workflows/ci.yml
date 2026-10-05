@@ -8,26 +8,45 @@ concurrency:
 jobs:
   verify:
     runs-on: security
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
         with:
           go-version: '1.26'
           cache: false
-      - name: Check Go
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Check Go and CLI workflows
         run: |
           test -z "$(gofmt -l pkg app/*.go cmd internal)"
           go vet ./...
           go test -race ./...
-          go build ./cmd/hvac ./cmd/hvac-compare
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: '22'
+          mkdir -p bin
+          go build -o bin/hvac ./cmd/hvac
+          go build -o bin/hvac-compare ./cmd/hvac-compare
+          go build -o bin/hvac-import-hpxml ./cmd/hvac-import-hpxml
+          node tools/cli-smoke.mjs
+          node tools/check-references.mjs
       - name: Check desktop frontend
         working-directory: app/frontend
         run: |
           npm ci
           npm run check
           npm run build
-      - name: Compile Wails application boundary
-        run: GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -tags desktop -o desktop-check.exe ./cmd/desktop
+      - name: Native Linux prerequisites
+        run: sh tools/install-linux-ci.sh
+      - name: Build runnable desktop and exercise native UI
+        run: |
+          go build -tags desktop,production,webkit2_41 -o bin/hvac-desktop ./cmd/desktop
+          xvfb-run -a dbus-run-session -- env GTK_MODULES=gail:atk-bridge WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 python3 tools/desktop-acceptance.py bin/hvac-desktop
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -tags desktop,production -o bin/hvac-desktop.exe ./cmd/desktop
+      - name: Retain validation and desktop evidence
+        if: always()
+        uses: https://code.forgejo.org/actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5
+        with:
+          name: validation-and-desktop
+          path: |
+            dist/validation
+            dist/desktop-acceptance

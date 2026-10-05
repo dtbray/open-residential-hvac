@@ -1,0 +1,113 @@
+{
+  "Report: MyBuilding: Summary": {
+    "Windows: Window1": {
+      "Orientation": "N",
+      "Heating HTM": 22.12,
+      "Cooling HTM": 9.98
+    },
+    "Windows: Window2": {
+      "Orientation": "S",
+      "Heating HTM": 22.12,
+      "Cooling HTM": 16.66
+    },
+    "Windows: Window3": {
+      "Orientation": "W",
+      "Heating HTM": 22.12,
+      "Cooling HTM": 33.84
+    },
+    "Doors: Door1": {
+      "Orientation": "S",
+      "Heating HTM": 14.36,
+      "Cooling HTM": 5.17
+    },
+    "Above Grade Walls: Wall1": {
+      "Heating HTM": 2.78,
+      "Cooling HTM": 0.36
+    },
+    "Infiltration": {
+      "Heating CFM": 23,
+      "Cooling CFM": 12
+    },
+    "Ventilation": {
+      "Heating CFM": 0,
+      "Cooling CFM": 0
+    }
+  },
+  "Report: MyBuilding: Loads": {
+    "Windows: Window1": {
+      "Area (ft^2)": 35.3,
+      "Heating (Btuh)": 781,
+      "Cooling Sensible (Btuh)": 352
+    },
+    "Windows: Window2": {
+      "Area (ft^2)": 35.3,
+      "Heating (Btuh)": 781,
+      "Cooling Sensible (Btuh)": 588
+    },
+    "Windows: Window3": {
+      "Area (ft^2)": 52.9,
+      "Heating (Btuh)": 1170,
+      "Cooling Sensible (Btuh)": 1790
+    },
+    "Doors: Door1": {
+      "Area (ft^2)": 20.0,
+      "Heating (Btuh)": 287,
+      "Cooling Sensible (Btuh)": 103
+    },
+    "Above Grade Walls: Wall1": {
+      "Area (ft^2)": 542.4,
+      "Heating (Btuh)": 1510,
+      "Cooling Sensible (Btuh)": 193
+    },
+    "Infiltration": {
+      "Wall Area Ratio": 1.0,
+      "Heating (Btuh)": 1354,
+      "Cooling Sensible (Btuh)": 183,
+      "Cooling Latent (Btuh)": -195
+    },
+    "Internal Gains": {
+      "Cooling Sensible (Btuh)": 3320,
+      "Cooling Latent (Btuh)": 800
+    },
+    "Ducts": {
+      "Heating (Btuh)": 0,
+      "Cooling Sensible (Btuh)": 0,
+      "Cooling Latent (Btuh)": 0
+    },
+    "Ventilation": {
+      "Heating (Btuh)": 0,
+      "Cooling Sensible (Btuh)": 0,
+      "Cooling Latent (Btuh)": 0
+    },
+    "Piping": {
+      "Heating (Btuh)": 0
+    },
+    "Blower Heat": {
+      "Cooling Sensible (Btuh)": 0
+    },
+    "AED Excursion": {
+      "Cooling Sensible (Btuh)": 872
+    },
+    "Total": {
+      "Heating (Btuh)": 5884,
+      "Cooling Sensible (Btuh)": 7403,
+      "Cooling Latent (Btuh)": 605
+    }
+  },
+  "Report: MyBuilding: AED Curve": {
+    "MyBuilding": {
+      "Hr 8 (Btuh)": 1229,
+      "Hr 9 (Btuh)": 1847,
+      "Hr 10 (Btuh)": 2567,
+      "Hr 11 (Btuh)": 3158,
+      "Hr 12 (Btuh)": 3523,
+      "Hr 13 (Btuh)": 4211,
+      "Hr 14 (Btuh)": 5024,
+      "Hr 15 (Btuh)": 5523,
+      "Hr 16 (Btuh)": 5612,
+      "Hr 17 (Btuh)": 5346,
+      "Hr 18 (Btuh)": 4213,
+      "Hr 19 (Btuh)": 1493
+    }
+  }
+}

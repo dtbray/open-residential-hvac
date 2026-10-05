@@ -133,7 +133,8 @@ methodological differences rather than normalize them away.
 The architectural refactor preserves the existing model's numerical loads and
 node identities. This is a regression requirement for unchanged physics, not a
 requirement that future national or dynamic models agree with `designload`.
-Real OpenStudio-HPXML comparisons remain an outstanding MVP acceptance gate.
+Two real apartment comparisons are now stored; broader whole-house comparison
+and investigation remain outstanding MVP acceptance work.
 
 ## Development API migration
 

@@ -1,0 +1,20 @@
+{
+  "generator": "OpenStudio-HPXML",
+  "version": "1.12.0",
+  "sdk": "3.11.0+241b8abb4d",
+  "lock": "tools/oracle-lock.json",
+  "schema_validation": true,
+  "schematron_validation": true,
+  "annual_simulation": false,
+  "input_sha256": "290a0bcdb034a4e1466cf6008aef6515f3e6f49411497e7e570f1d1f51d912f8",
+  "resolved_sha256": "9ab0988e65b2a503acd6e80660645871b9f5a713f3c229100b7498af4e62aba1",
+  "oracle_sha256": "8f0ff722db7fe51df067656774226ce39551d433eba69e2e3eb35121444c0743",
+  "weather_file": "USA_AZ_Phoenix-Sky.Harbor.Intl.AP.722780_TMY3.epw",
+  "weather_sha256": "7fbbcddc3cf183d7517da8ae893058fb01142c5de0d024b40cbf4a12e5855171",
+  "source": "OpenStudio-HPXML-v1.12.0.zip workflow/sample_files/base-bldgtype-mf-unit.xml",
+  "modifications": [
+    "Replace weather file with bundled Phoenix TMY3 file; set state AZ."
+  ],
+  "command": "openstudio workflow/run_simulation.rb -x INPUT.xml -o OUTPUT --skip-simulation --output-format json",
+  "license": "../LICENSE.upstream.md"
+}

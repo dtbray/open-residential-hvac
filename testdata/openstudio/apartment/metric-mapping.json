@@ -1,0 +1,116 @@
+{
+  "heating_load_w": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Total",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "cooling_sensible_w": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Total",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "cooling_latent_w": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Total",
+    "field": "Cooling Latent (Btuh)",
+    "unit": "Btu/h"
+  },
+  "cooling_load_w": {
+    "sum": [
+      "cooling_sensible_w",
+      "cooling_latent_w"
+    ]
+  },
+  "room/block/heating/envelope/Window1": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Windows: Window1",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/envelope/Window2": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Windows: Window2",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/envelope/Window3": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Windows: Window3",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/envelope/Door1": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Doors: Door1",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/sensible/envelope/Door1": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Doors: Door1",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/envelope/Wall1": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Above Grade Walls: Wall1",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/sensible/envelope/Wall1": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Above Grade Walls: Wall1",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/infiltration": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Infiltration",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/sensible/infiltration": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Infiltration",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/latent/infiltration": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Infiltration",
+    "field": "Cooling Latent (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/sensible/internal": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Internal Gains",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/latent/internal": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Internal Gains",
+    "field": "Cooling Latent (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/heating/ventilation": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Ventilation",
+    "field": "Heating (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/sensible/ventilation": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Ventilation",
+    "field": "Cooling Sensible (Btuh)",
+    "unit": "Btu/h"
+  },
+  "room/block/cooling/latent/ventilation": {
+    "report": "Report: MyBuilding: Loads",
+    "entry": "Ventilation",
+    "field": "Cooling Latent (Btuh)",
+    "unit": "Btu/h"
+  }
+}

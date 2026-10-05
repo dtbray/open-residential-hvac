@@ -1,0 +1,114 @@
+name: Native release packages
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'all, linux, windows, or macos (default all)'
+        default: all
+        required: true
+jobs:
+  preflight:
+    runs-on: security
+    steps:
+      - name: Verify requested native runners are configured
+        env:
+          TARGET: ${{ github.event.inputs.target || 'all' }}
+          WINDOWS_RUNNER: ${{ vars.HVAC_WINDOWS_RUNNER }}
+          MACOS_RUNNER: ${{ vars.HVAC_MACOS_RUNNER }}
+        run: |
+          case "$TARGET" in all|linux|windows|macos) ;; *) echo 'Unknown target'; exit 1;; esac
+          if [ "$TARGET" = all ] || [ "$TARGET" = windows ]; then test -n "$WINDOWS_RUNNER" || { echo 'Native Windows runner missing: configure HVAC_WINDOWS_RUNNER'; exit 1; }; fi
+          if [ "$TARGET" = all ] || [ "$TARGET" = macos ]; then test -n "$MACOS_RUNNER" || { echo 'Native macOS runner missing: configure HVAC_MACOS_RUNNER'; exit 1; }; fi
+  linux:
+    needs: preflight
+    if: github.event_name == 'push' || github.event.inputs.target == 'all' || github.event.inputs.target == 'linux'
+    runs-on: security
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: '1.26'
+          cache: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Build frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npm run check
+          npm run build
+      - name: Native prerequisites
+        run: sh tools/install-linux-ci.sh
+      - name: Package native CLI and desktop with licenses and checksums
+        env:
+          HVAC_VERSION: ${{ github.ref_name }}
+        run: node tools/package-release.mjs
+      - name: Exercise packaged Linux desktop
+        run: |
+          mkdir -p bin
+          go build -o bin/hvac ./cmd/hvac
+          xvfb-run -a dbus-run-session -- env GTK_MODULES=gail:atk-bridge WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 python3 tools/desktop-acceptance.py dist/package/open-residential-hvac-${{ github.ref_name }}-linux-x64/hvac-desktop
+      - uses: https://code.forgejo.org/actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5
+        with:
+          name: linux-packages
+          path: dist/releases
+  windows:
+    needs: preflight
+    if: vars.HVAC_WINDOWS_RUNNER != '' && (github.event_name == 'push' || github.event.inputs.target == 'all' || github.event.inputs.target == 'windows')
+    runs-on: ${{ vars.HVAC_WINDOWS_RUNNER || 'windows-unconfigured' }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: '1.26'
+          cache: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Build frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npm run check
+          npm run build
+      - name: Package native CLI and desktop with licenses and checksums
+        env:
+          HVAC_VERSION: ${{ github.ref_name }}
+        run: node tools/package-release.mjs
+      - uses: https://code.forgejo.org/actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5
+        with:
+          name: windows-packages
+          path: dist/releases
+  macos:
+    needs: preflight
+    if: vars.HVAC_MACOS_RUNNER != '' && (github.event_name == 'push' || github.event.inputs.target == 'all' || github.event.inputs.target == 'macos')
+    runs-on: ${{ vars.HVAC_MACOS_RUNNER || 'macos-unconfigured' }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
+        with:
+          go-version: '1.26'
+          cache: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Build frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npm run check
+          npm run build
+      - name: Package native CLI and desktop with licenses and checksums
+        env:
+          HVAC_VERSION: ${{ github.ref_name }}
+        run: node tools/package-release.mjs
+      - uses: https://code.forgejo.org/actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5
+        with:
+          name: macos-packages
+          path: dist/releases

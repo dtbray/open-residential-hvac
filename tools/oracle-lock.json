@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hpxml": {
+    "version": "1.12.0",
+    "url": "https://github.com/NatLabRockies/OpenStudio-HPXML/releases/download/v1.12.0/OpenStudio-HPXML-v1.12.0.zip",
+    "sha256": "0770bfd7bf46441ff7d2dc9beb1aa24f1be4d878aeee47ebea90fc27721eb38a"
+  },
+  "openstudio": {
+    "version": "3.11.0+241b8abb4d",
+    "url": "https://github.com/NatLabRockies/OpenStudio/releases/download/v3.11.0/OpenStudio-3.11.0%2B241b8abb4d-Ubuntu-22.04-x86_64.tar.gz",
+    "sha256": "9b028f0fd7f82fd1ba965dd8f1bf8a97488fd3042f629d46b7ca700a23cc2cf0",
+    "binary": "OpenStudio-3.11.0+241b8abb4d-Ubuntu-22.04-x86_64/usr/local/openstudio-3.11.0/bin/openstudio"
+  },
+  "fixtures": ["apartment", "apartment-hot"]
+}

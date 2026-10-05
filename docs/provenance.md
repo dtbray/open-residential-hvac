@@ -39,3 +39,13 @@ evidence:
         description: Measured as a rectangular wall; small recesses omitted
 ```
 
+
+## OpenStudio-HPXML comparison evidence
+
+Validation fixtures and generated reports use pinned OpenStudio-HPXML 1.12.0 and
+OpenStudio 3.11.0+241b8abb4d, with archive hashes in tools/oracle-lock.json. Upstream
+fixture rights are retained in testdata/openstudio/LICENSE.upstream.md. Geometry
+imports and comparison choices preserve explicit source/assumption metadata. No
+proprietary coefficient tables or oracle model code are redistributed as engine
+methods. Full generation manifests, weather hashes and component mappings accompany
+each fixture. See testdata/openstudio/README.md and docs/validation.md.

@@ -1,0 +1,278 @@
+{
+  "Template": {
+    "id": "apartment-hot",
+    "name": "Residential apartment hot-climate comparison",
+    "location": {
+      "description": "Phoenix upstream apartment benchmark; explicit comparison inputs, not a design recommendation"
+    },
+    "design": {
+      "heating": {
+        "outdoor_db_c": 5.199999999999999,
+        "indoor_db_c": 21.11111111111111
+      },
+      "cooling": {
+        "outdoor_db_c": 42.3,
+        "indoor_db_c": 23.88888888888889,
+        "indoor_rh_fraction": 0.45,
+        "outdoor_rh_fraction": 0.25
+      },
+      "pressure_pa": 97000,
+      "evidence": {
+        "heating.outdoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        },
+        "heating.indoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.outdoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.indoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.indoor_rh_fraction": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.outdoor_rh_fraction": {
+          "source": {
+            "kind": "user_input",
+            "reference": "Benchmark comparison choices in docs/validation.md"
+          },
+          "assumptions": [
+            {
+              "id": "benchmark-air",
+              "description": "Outdoor RH 25% and pressure 97000 Pa are explicit benchmark choices; not asserted equivalent to oracle humidity difference."
+            }
+          ]
+        },
+        "pressure_pa": {
+          "source": {
+            "kind": "user_input",
+            "reference": "Benchmark comparison choices in docs/validation.md"
+          },
+          "assumptions": [
+            {
+              "id": "benchmark-air",
+              "description": "Outdoor RH 25% and pressure 97000 Pa are explicit benchmark choices; not asserted equivalent to oracle humidity difference."
+            }
+          ]
+        }
+      }
+    },
+    "assemblies": [
+      {
+        "id": "wall",
+        "name": "Explicit wall U",
+        "u_factor_w_m2_k": 0.4,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      },
+      {
+        "id": "glass",
+        "name": "Explicit glazing U",
+        "u_factor_w_m2_k": 2,
+        "evidence": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    ],
+    "infiltration": {
+      "mode": "explicit",
+      "airflow_m3_s": 0.008967001550000001,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+          }
+        }
+      }
+    },
+    "ventilation": {
+      "airflow_m3_s": 0,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "zones": [
+      {
+        "id": "main",
+        "name": "Main",
+        "rooms": [
+          {
+            "id": "block",
+            "name": "Apartment block",
+            "floor_area_m2": 30,
+            "volume_m3": 75,
+            "occupants": 0,
+            "occupant_sensible_w_per_person": 0,
+            "occupant_latent_w_per_person": 0,
+            "lighting_w": 0,
+            "internal_sensible_w": 972.9959529717778,
+            "internal_latent_w": 234.45685613777778,
+            "walls": [
+              {
+                "id": "living-west",
+                "name": "living-west",
+                "area_m2": 20,
+                "orientation": "west",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "wall",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "synthetic validation fixture"
+                    }
+                  }
+                }
+              }
+            ],
+            "windows": [],
+            "doors": [],
+            "floors": [],
+            "ceilings": [],
+            "evidence": {
+              "volume_m3": {
+                "source": {
+                  "kind": "user_input",
+                  "reference": "synthetic validation fixture"
+                }
+              },
+              "internal_sensible_w": {
+                "source": {
+                  "kind": "imported",
+                  "name": "Pinned OpenStudio-HPXML apartment benchmark",
+                  "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+                }
+              },
+              "internal_latent_w": {
+                "source": {
+                  "kind": "imported",
+                  "name": "Pinned OpenStudio-HPXML apartment benchmark",
+                  "reference": "testdata/openstudio/apartment-hot/resolved.xml and oracle.json"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Solar": {
+    "Window1": {
+      "Irradiance": 100,
+      "ShadingFactor": 1,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+        },
+        "assumptions": [
+          {
+            "id": "benchmark-solar",
+            "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+          }
+        ]
+      }
+    },
+    "Window2": {
+      "Irradiance": 400,
+      "ShadingFactor": 1,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+        },
+        "assumptions": [
+          {
+            "id": "benchmark-solar",
+            "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+          }
+        ]
+      }
+    },
+    "Window3": {
+      "Irradiance": 500,
+      "ShadingFactor": 1,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+        },
+        "assumptions": [
+          {
+            "id": "benchmark-solar",
+            "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+          }
+        ]
+      }
+    }
+  },
+  "Adjacent": {
+    "Wall2": {
+      "Heating": 21.11111111111111,
+      "Cooling": 23.88888888888889,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+        }
+      }
+    },
+    "Floor1": {
+      "Heating": 21.11111111111111,
+      "Cooling": 23.88888888888889,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+        }
+      }
+    },
+    "Floor2": {
+      "Heating": 21.11111111111111,
+      "Cooling": 23.88888888888889,
+      "Evidence": {
+        "source": {
+          "kind": "user_input",
+          "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+        }
+      }
+    }
+  }
+}

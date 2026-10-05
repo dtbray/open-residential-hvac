@@ -6,8 +6,9 @@ transparent room and whole-building heating/cooling design loads. Each result ha
 IDs, equations, inputs, units, sources, assumptions, and explicit aggregation.
 
 **Development preview. The complete v0.1 acceptance gate has not been met.**
-OpenStudio-HPXML design-load comparisons and representative real HPXML import
-remain outstanding. The engine uses a deliberately simplified steady-state model;
+Pinned OpenStudio-HPXML apartment comparisons and native Linux desktop acceptance
+are available. Broad whole-house HPXML support and Windows/macOS acceptance remain
+outstanding; the documented cooling differences are substantial. The engine uses a deliberately simplified steady-state model;
 it does not claim Manual J, S, D, or ACCA compliance.
 
 ## Source and license
@@ -24,7 +25,7 @@ proprietary ACCA tables are included.
 
 ## CLI
 
-Go 1.24 or newer:
+Go 1.25 or newer:
 
 ```sh
 go test ./...
@@ -104,7 +105,7 @@ npm ci
 npm run check
 npm run build
 cd ../..
-go build -tags 'desktop,webkit2_41' -o bin/open-residential-hvac ./cmd/desktop
+go build -tags 'desktop,production,webkit2_41' -o bin/open-residential-hvac ./cmd/desktop
 bin/open-residential-hvac
 ```
 
@@ -136,3 +137,16 @@ sensible load and does not reproduce time-dependent cooling sizing methods.
 Read [methodology](docs/methodology.md), [provenance](docs/provenance.md),
 [validation status](docs/validation.md), and [the MVP specification](docs/mvp-specification.md)
 before interpreting these development results.
+
+## CI, validation and packages
+
+[CI gates](docs/ci.md) describe PR smoke/native tests, weekly pinned oracle
+regeneration, dependency scans and native release packaging. Actual Denver/Phoenix
+apartment comparisons retain component-level differences and show substantial
+cooling divergence; they do not establish sizing accuracy. The supported HPXML
+adapter subset and reproduction inputs are in [oracle evidence](testdata/openstudio/README.md).
+
+Linux native acceptance is automated. Windows/macOS native runners and GUI
+acceptance remain outstanding; all-platform releases fail preflight until the
+runner labels are configured. Packages include licenses, source metadata and SHA256
+sidecars. No stable release is published automatically.

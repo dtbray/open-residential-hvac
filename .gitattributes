@@ -1,0 +1,2 @@
+# Preserve raw HPXML evidence bytes and hashes, including upstream line endings.
+testdata/openstudio/**/*.xml -text whitespace=-blank-at-eol

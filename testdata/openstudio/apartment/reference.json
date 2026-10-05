@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "generator": "OpenStudio-HPXML",
+  "generator_version": "1.12.0 / OpenStudio 3.11.0+241b8abb4d",
+  "fixture_sha256": "36abe5d08979143c2c042da32cf66eb9f7d048712c0bf6d17c21b1de4a9f4ac1",
+  "source_files": [
+    "testdata/openstudio/apartment/oracle.json",
+    "testdata/openstudio/apartment/resolved.xml",
+    "testdata/openstudio/apartment/input.xml"
+  ],
+  "notes": "Real schema/schematron-validated design-only run. Diagnostic comparison; matched geometry but explicitly different solar/airflow/humidity policy. Negative oracle latent values are retained.",
+  "metrics_w": {
+    "heating_load_w": 1724.4301768933556,
+    "cooling_sensible_w": 2169.6051324849614,
+    "cooling_latent_w": 177.30799745419444,
+    "cooling_load_w": 2346.9131299391556,
+    "room/block/heating/envelope/Window1": 228.88850580450557,
+    "room/block/heating/envelope/Window2": 228.88850580450557,
+    "room/block/heating/envelope/Window3": 342.8931521015,
+    "room/block/heating/envelope/Door1": 84.11139713942778,
+    "room/block/cooling/sensible/envelope/Door1": 30.18632022773889,
+    "room/block/heating/envelope/Wall1": 442.53731596005554,
+    "room/block/cooling/sensible/envelope/Wall1": 56.56271654323889,
+    "room/block/heating/infiltration": 396.8182290131889,
+    "room/block/cooling/sensible/infiltration": 53.632005841516666,
+    "room/block/cooling/latent/infiltration": -57.148858683583335,
+    "room/block/cooling/sensible/internal": 972.9959529717778,
+    "room/block/cooling/latent/internal": 234.45685613777778,
+    "room/block/heating/ventilation": 0,
+    "room/block/cooling/sensible/ventilation": 0,
+    "room/block/cooling/latent/ventilation": 0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "mode": "diagnostic",
+  "relative_tolerance": 0.01,
+  "absolute_tolerance_w": 0.5,
+  "candidate_totals_w": {
+    "heating_load_w": 766.3529630733733,
+    "cooling_sensible_w": 3661.057157289705,
+    "cooling_latent_w": 359.875613782675,
+    "cooling_load_w": 4020.93277107238
+  },
+  "note": "Tolerance is diagnostic, not a pass gate or accuracy claim. CI separately protects investigated candidate regression and recorded differences."
+}

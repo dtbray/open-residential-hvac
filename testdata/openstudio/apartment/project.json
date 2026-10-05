@@ -1,0 +1,558 @@
+{
+  "version": 1,
+  "building": {
+    "id": "apartment",
+    "name": "Residential apartment comparison",
+    "location": {
+      "description": "Denver upstream apartment benchmark; explicit comparison inputs, not a design recommendation"
+    },
+    "zones": [
+      {
+        "id": "main",
+        "name": "Main",
+        "rooms": [
+          {
+            "id": "block",
+            "name": "Apartment block",
+            "floor_area_m2": 83.61273600000001,
+            "volume_m3": 203.8812954624,
+            "occupants": 0,
+            "occupant_sensible_w_per_person": 0,
+            "occupant_latent_w_per_person": 0,
+            "lighting_w": 0,
+            "internal_sensible_w": 972.9959529717778,
+            "internal_latent_w": 234.45685613777778,
+            "walls": [
+              {
+                "id": "Wall1",
+                "name": "Wall1",
+                "area_m2": 63.722195136,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "hpxml-assembly-Wall1",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "Wall2",
+                "name": "Wall2",
+                "area_m2": 27.304203456,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "adjacent_unit",
+                "assembly": "hpxml-assembly-Wall2",
+                "heating_adjacent_db_c": 21.11111111111111,
+                "cooling_adjacent_db_c": 23.88888888888889,
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "cooling_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  },
+                  "heating_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  }
+                }
+              }
+            ],
+            "windows": [
+              {
+                "id": "Window1",
+                "name": "Window1",
+                "area_m2": 3.279477312,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "hpxml-assembly-Window1",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "incident_solar_w_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shading_factor": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shgc": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  }
+                },
+                "parent_surface": "Wall1",
+                "shgc": 0.44,
+                "incident_solar_w_m2": 100,
+                "shading_factor": 1
+              },
+              {
+                "id": "Window2",
+                "name": "Window2",
+                "area_m2": 3.279477312,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "hpxml-assembly-Window2",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "incident_solar_w_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shading_factor": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shgc": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  }
+                },
+                "parent_surface": "Wall1",
+                "shgc": 0.44,
+                "incident_solar_w_m2": 400,
+                "shading_factor": 1
+              },
+              {
+                "id": "Window3",
+                "name": "Window3",
+                "area_m2": 4.914570816,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "hpxml-assembly-Window3",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "incident_solar_w_m2": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shading_factor": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Explicit north/south/west benchmark plane irradiance; not reverse-engineered from oracle"
+                    },
+                    "assumptions": [
+                      {
+                        "id": "benchmark-solar",
+                        "description": "Simplified simultaneous irradiance; oracle uses orientation/time/storage/shading adjustments."
+                      }
+                    ]
+                  },
+                  "shgc": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  }
+                },
+                "parent_surface": "Wall1",
+                "shgc": 0.44,
+                "incident_solar_w_m2": 500,
+                "shading_factor": 1
+              }
+            ],
+            "doors": [
+              {
+                "id": "Door1",
+                "name": "Door1",
+                "area_m2": 1.8580608,
+                "orientation": "",
+                "tilt_degrees": 90,
+                "adjacent": "outdoors",
+                "assembly": "hpxml-assembly-Door1",
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  }
+                },
+                "parent_surface": "Wall1"
+              }
+            ],
+            "floors": [
+              {
+                "id": "Floor1",
+                "name": "Floor1",
+                "area_m2": 83.61273600000001,
+                "orientation": "",
+                "tilt_degrees": 0,
+                "adjacent": "adjacent_unit",
+                "assembly": "hpxml-assembly-Floor1",
+                "heating_adjacent_db_c": 21.11111111111111,
+                "cooling_adjacent_db_c": 23.88888888888889,
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "cooling_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  },
+                  "heating_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  }
+                }
+              }
+            ],
+            "ceilings": [
+              {
+                "id": "Floor2",
+                "name": "Floor2",
+                "area_m2": 83.61273600000001,
+                "orientation": "",
+                "tilt_degrees": 0,
+                "adjacent": "adjacent_unit",
+                "assembly": "hpxml-assembly-Floor2",
+                "heating_adjacent_db_c": 21.11111111111111,
+                "cooling_adjacent_db_c": 23.88888888888889,
+                "evidence": {
+                  "area_m2": {
+                    "source": {
+                      "kind": "imported",
+                      "name": "HPXML supplied document",
+                      "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                    }
+                  },
+                  "cooling_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  },
+                  "heating_adjacent_db_c": {
+                    "source": {
+                      "kind": "user_input",
+                      "reference": "Adjacent residential units explicitly held at benchmark indoor design setpoints"
+                    }
+                  }
+                }
+              }
+            ],
+            "evidence": {
+              "floor_area_m2": {
+                "source": {
+                  "kind": "imported",
+                  "name": "HPXML supplied document",
+                  "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                }
+              },
+              "internal_latent_w": {
+                "source": {
+                  "kind": "imported",
+                  "name": "Pinned OpenStudio-HPXML apartment benchmark",
+                  "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+                }
+              },
+              "internal_sensible_w": {
+                "source": {
+                  "kind": "imported",
+                  "name": "Pinned OpenStudio-HPXML apartment benchmark",
+                  "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+                }
+              },
+              "volume_m3": {
+                "source": {
+                  "kind": "imported",
+                  "name": "HPXML supplied document",
+                  "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "assemblies": [
+      {
+        "id": "hpxml-assembly-Wall1",
+        "name": "hpxml-assembly-Wall1",
+        "u_factor_w_m2_k": 0.25014375952041795,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Wall2",
+        "name": "hpxml-assembly-Wall2",
+        "u_factor_w_m2_k": 1.4195658352783718,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Window1",
+        "name": "hpxml-assembly-Window1",
+        "u_factor_w_m2_k": 1.9873921693897203,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Window2",
+        "name": "hpxml-assembly-Window2",
+        "u_factor_w_m2_k": 1.9873921693897203,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Window3",
+        "name": "hpxml-assembly-Window3",
+        "u_factor_w_m2_k": 1.9873921693897203,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Floor1",
+        "name": "hpxml-assembly-Floor1",
+        "u_factor_w_m2_k": 1.071370441719526,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Floor2",
+        "name": "hpxml-assembly-Floor2",
+        "u_factor_w_m2_k": 2.7039349243397557,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      },
+      {
+        "id": "hpxml-assembly-Door1",
+        "name": "hpxml-assembly-Door1",
+        "u_factor_w_m2_k": 1.2905143957076106,
+        "evidence": {
+          "source": {
+            "kind": "imported",
+            "name": "HPXML supplied document",
+            "reference": "HPXML areas in ft2, volume in ft3, R in h ft2 F/Btu, U in Btu/(h ft2 F)"
+          }
+        }
+      }
+    ],
+    "infiltration": {
+      "mode": "explicit",
+      "airflow_m3_s": 0.01085479135,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        }
+      }
+    },
+    "ventilation": {
+      "airflow_m3_s": 0,
+      "evidence": {
+        "airflow_m3_s": {
+          "source": {
+            "kind": "user_input",
+            "reference": "synthetic validation fixture"
+          }
+        }
+      }
+    },
+    "design": {
+      "heating": {
+        "outdoor_db_c": -14,
+        "indoor_db_c": 21.11111111111111
+      },
+      "cooling": {
+        "outdoor_db_c": 33.2,
+        "outdoor_rh_fraction": 0.15,
+        "indoor_db_c": 23.88888888888889,
+        "indoor_rh_fraction": 0.45
+      },
+      "pressure_pa": 83000,
+      "evidence": {
+        "cooling.indoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.indoor_rh_fraction": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.outdoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        },
+        "cooling.outdoor_rh_fraction": {
+          "source": {
+            "kind": "user_input",
+            "reference": "Benchmark comparison choices in docs/validation.md"
+          },
+          "assumptions": [
+            {
+              "id": "benchmark-air",
+              "description": "Outdoor RH 15% and pressure 83000 Pa are explicit benchmark choices; not asserted equivalent to oracle humidity difference."
+            }
+          ]
+        },
+        "heating.indoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        },
+        "heating.outdoor_db_c": {
+          "source": {
+            "kind": "imported",
+            "name": "Pinned OpenStudio-HPXML apartment benchmark",
+            "reference": "testdata/openstudio/apartment/resolved.xml and oracle.json"
+          }
+        },
+        "pressure_pa": {
+          "source": {
+            "kind": "user_input",
+            "reference": "Benchmark comparison choices in docs/validation.md"
+          },
+          "assumptions": [
+            {
+              "id": "benchmark-air",
+              "description": "Outdoor RH 15% and pressure 83000 Pa are explicit benchmark choices; not asserted equivalent to oracle humidity difference."
+            }
+          ]
+        }
+      }
+    }
+  }
+}
