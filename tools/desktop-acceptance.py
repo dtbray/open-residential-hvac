@@ -63,6 +63,15 @@ def stage(name):
     (artifact / 'steps.json').write_text(json.dumps(stages,indent=2)+'\n')
     print(name,flush=True)
 
+def expand(token):
+    disclosure=wait(lambda:next((n for n in nodes() if token in n.name and n.getRoleName() not in ('document web','landmark','section','paragraph')),None),token+' inspector')
+    component=disclosure.queryComponent()
+    try: component.scrollTo(pyatspi.SCROLL_ANYWHERE)
+    except (AttributeError, NotImplementedError, RuntimeError): component.grabFocus()
+    time.sleep(.2)
+    box=component.getExtents(pyatspi.DESKTOP_COORDS)
+    subprocess.run(['xdotool','mousemove',str(box.x+10),str(box.y+10),'click','1'],check=True)
+
 try:
     with tempfile.TemporaryDirectory(prefix='hvac-desktop-') as temp:
         destination=str(pathlib.Path(temp)/'edited.yaml')
@@ -80,6 +89,10 @@ try:
         subprocess.run(['xdotool','mousemove',str(box.x+10),str(box.y+10),'click','1'],check=True)
         wait(lambda:'sum(children)' in content() or 'Σ' in content(),'aggregation equation')
         stage('inspect result hierarchy and equation')
+        for token in ['zone/main/heating','room/living/heating','room/living/heating/envelope','room/living/heating/envelope/living-west']:
+            expand(token)
+        wait(lambda:'living-west.net_area' in content() and 'wall.u_factor' in content() and 'A_net' in content() and 'user_input' in content(),'leaf inputs, equation and provenance')
+        stage('inspect wall inputs, equation and provenance')
         click('Save *')
         wait(lambda:'Save HVAC project' in content(),'native save dialog')
         # GTK filename entry supports an absolute path.

@@ -12,7 +12,7 @@ other branches without duplicating every feature-branch PR run.
 `CI / verify` checks formatting, vet, race tests, numerical/serialization regressions,
 CLI process workflows, frontend types and assets, stored reference comparisons,
 and a **runnable production** Linux desktop. Native acceptance uses a virtual X
-display and AT-SPI to create/edit/calculate, expand the inspector, save through the
+display and AT-SPI to create/edit/calculate, expand the inspector down to wall inputs/equation/provenance, save through the
 native dialog, compare rendered totals to the CLI, reopen and recalculate. It uses
 the real Wails bridge and Go engine, with no frontend HVAC formulas or mocked bridge.
 Windows production cross-compilation remains an additional compile check.
