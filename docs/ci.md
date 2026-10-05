@@ -34,7 +34,7 @@ not set that environment variable.
 dispatch. One job checksum-verifies pinned OpenStudio 3.11.0 and HPXML 1.12.0 archives,
 validates input/weather hashes, executes schema/schematron-validated design-only
 runs, and compares the regenerated raw oracle reports exactly with stored reports.
-It never overwrites committed evidence. Another runs pinned `govulncheck` against
+It never overwrites committed evidence. A following job (also run if the oracle fails) runs pinned `govulncheck` against
 the desktop build tags and `npm audit --audit-level=high`. Findings or infrastructure
 errors fail the job; both retain reports. Scanner/database access is confined to
 CI, not runtime calculations. Reachable Go findings are blocking; the scanner can
@@ -73,6 +73,10 @@ Git/tar and Xcode command-line tools. The workflows select the runner's native C
 architecture. Windows/macOS jobs use native builds and CLI tests but still require
 native GUI acceptance before claiming desktop support. No cross-build is labeled
 as a completed native platform test.
+
+Unconfigured conditional platform jobs use the Linux label only to evaluate their
+skip condition on the current Forgejo runner; they never build a Windows/macOS
+package on Linux. This avoids indefinitely queued jobs on nonexistent labels.
 
 An all-platform/tag release **fails preflight** if either runner variable is
 missing. Missing platforms are never silently advertised as released. A manual

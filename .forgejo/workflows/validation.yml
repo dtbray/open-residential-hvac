@@ -28,6 +28,8 @@ jobs:
           name: regenerated-oracle
           path: dist/oracle
   dependencies:
+    needs: oracle
+    if: always()
     runs-on: security
     timeout-minutes: 20
     steps:

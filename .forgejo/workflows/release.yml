@@ -59,7 +59,7 @@ jobs:
   windows:
     needs: preflight
     if: vars.HVAC_WINDOWS_RUNNER != '' && (github.event_name == 'push' || github.event.inputs.target == 'all' || github.event.inputs.target == 'windows')
-    runs-on: ${{ vars.HVAC_WINDOWS_RUNNER || 'windows-unconfigured' }}
+    runs-on: ${{ vars.HVAC_WINDOWS_RUNNER || 'security' }}
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -87,7 +87,7 @@ jobs:
   macos:
     needs: preflight
     if: vars.HVAC_MACOS_RUNNER != '' && (github.event_name == 'push' || github.event.inputs.target == 'all' || github.event.inputs.target == 'macos')
-    runs-on: ${{ vars.HVAC_MACOS_RUNNER || 'macos-unconfigured' }}
+    runs-on: ${{ vars.HVAC_MACOS_RUNNER || 'security' }}
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
