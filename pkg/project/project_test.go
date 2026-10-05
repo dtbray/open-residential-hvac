@@ -3,12 +3,15 @@ package project
 
 import (
 	"bytes"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/building"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/provenance"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/units"
 	"reflect"
 	"testing"
 )
 
 func TestRanchRoundTrip(t *testing.T) {
-	p, err := Open("../../testdata/buildings/multi-room-ranch.json")
+	p, err := Open("../../testdata/designload/buildings/multi-room-ranch.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,11 +29,38 @@ func TestRanchRoundTrip(t *testing.T) {
 		}
 	}
 }
+
+func TestInternationalPropertiesRoundTrip(t *testing.T) {
+	p, err := Open("../../testdata/designload/buildings/simple-box.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	evidence := provenance.Evidence{Source: provenance.Source{Kind: provenance.Measurement, Reference: "pressure test"}, Assumptions: []provenance.Assumption{{ID: "test-condition", Description: "Pressure test assumed representative of envelope state"}}}
+	ach := units.AirChangeRate(3.2)
+	p.Building.Infiltration.Airtightness = &building.AirtightnessMeasurement{AirChangesPerHour: &ach, TestPressure: 10, Evidence: evidence}
+	efficiency, latent := 0.85, 0.5
+	p.Building.Ventilation.HeatRecovery = &building.HeatRecovery{SensibleEfficiency: &efficiency, LatentEfficiency: &latent, Evidence: evidence}
+	azimuth := units.Azimuth(237.5)
+	p.Building.Zones[0].Rooms[0].Walls[0].Azimuth = &azimuth
+	for _, format := range []string{"json", "yaml"} {
+		raw, err := Encode(*p, format)
+		if err != nil {
+			t.Fatal(err)
+		}
+		q, err := Decode(raw, format)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(p, q) {
+			t.Fatal("international physical properties or provenance lost in", format)
+		}
+	}
+}
 func TestStrictDecoding(t *testing.T) {
 	if _, err := Decode([]byte(`{"version":1,"version":1}`), "json"); err == nil {
 		t.Fatal("duplicate JSON keys accepted")
 	}
-	p, _ := Open("../../testdata/buildings/simple-box.json")
+	p, _ := Open("../../testdata/designload/buildings/simple-box.json")
 	b, _ := Encode(*p, "json")
 	for _, data := range [][]byte{bytes.Replace(b, []byte(`"version": 1`), []byte(`"version": 2`), 1), bytes.Replace(b, []byte(`"version": 1`), []byte(`"version": 1, "typo": true`), 1), append(b, []byte(` {}`)...)} {
 		if _, err := Decode(data, "json"); err == nil {

@@ -39,7 +39,7 @@
   {:else if tab === 'Project JSON'}
     <h2>Complete project input</h2><p>Use this editor for optional fields, new surfaces, layers, or provenance. Apply before calculating or saving.</p><textarea bind:value={raw} aria-label="Project JSON"></textarea><button onclick={applyRaw}>Apply JSON</button>
   {:else if result}
-    <h2>Calculated loads</h2><div class="totals"><p>Heating <strong>{result.heating_load_w.toFixed(1)} W</strong></p><p>Cooling sensible <strong>{result.cooling_sensible_w.toFixed(1)} W</strong></p><p>Cooling latent <strong>{result.cooling_latent_w.toFixed(1)} W</strong></p><p>Cooling total <strong>{result.cooling_load_w.toFixed(1)} W</strong></p></div>
+    <h2>Design loads</h2><p>Calculation method: {result.methodology.name} {result.methodology.version} ({result.methodology.id}) · {result.methodology.reference}</p><div class="totals"><p>Heating design load <strong>{result.heating_load_w.toFixed(1)} W</strong></p><p>Sensible cooling load <strong>{result.cooling_sensible_w.toFixed(1)} W</strong></p><p>Latent cooling load <strong>{result.cooling_latent_w.toFixed(1)} W</strong></p><p>Cooling design load <strong>{result.cooling_load_w.toFixed(1)} W</strong></p></div>
     <table><thead><tr><th>Room</th><th>Heating W</th><th>Cooling sensible W</th><th>Cooling latent W</th></tr></thead><tbody>{#each result.rooms as room}<tr><td>{room.name}</td><td>{room.heating_load_w.toFixed(1)}</td><td>{room.cooling_sensible_w.toFixed(1)}</td><td>{room.cooling_latent_w.toFixed(1)}</td></tr>{/each}</tbody></table>
     <h2>Calculation inspector</h2><Inspector node={result.heating}/><Inspector node={result.cooling}/>
   {:else}<h2>Results</h2><p>Calculate the current project to inspect its loads.</p>{/if}

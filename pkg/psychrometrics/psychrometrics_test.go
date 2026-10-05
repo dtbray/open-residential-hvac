@@ -15,7 +15,7 @@ func close(t *testing.T, got, want float64) {
 	}
 }
 func TestPsychroLibReference(t *testing.T) {
-	data, err := os.ReadFile("../../testdata/reference/psychrolib-2.5.0.json")
+	data, err := os.ReadFile("../../testdata/physics/psychrolib-2.5.0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -53,14 +53,16 @@ type Room struct {
 type Adjacency string
 
 const (
-	Outdoors     Adjacency = "outdoors"
-	Ground       Adjacency = "ground"
-	Conditioned  Adjacency = "conditioned"
-	Attic        Adjacency = "unconditioned_attic"
-	Garage       Adjacency = "garage"
-	Crawlspace   Adjacency = "crawlspace"
-	Basement     Adjacency = "basement"
-	AdjacentUnit Adjacency = "adjacent_unit"
+	Outdoors           Adjacency = "outdoors"
+	Ground             Adjacency = "ground"
+	Conditioned        Adjacency = "conditioned"
+	Attic              Adjacency = "unconditioned_attic"
+	Garage             Adjacency = "garage"
+	Crawlspace         Adjacency = "crawlspace"
+	Basement           Adjacency = "basement"
+	AdjacentUnit       Adjacency = "adjacent_unit"
+	UnconditionedSpace Adjacency = "unconditioned_space"
+	AdjacentBuilding   Adjacency = "adjacent_building"
 )
 
 // Area is gross; window/door areas referenced to this surface are subtracted.
@@ -69,6 +71,7 @@ type Surface struct {
 	Name              string                         `json:"name" yaml:"name"`
 	Area              units.Area                     `json:"area_m2" yaml:"area_m2"`
 	Orientation       string                         `json:"orientation" yaml:"orientation"`
+	Azimuth           *units.Azimuth                 `json:"azimuth_degrees,omitempty" yaml:"azimuth_degrees,omitempty"`
 	TiltDegrees       float64                        `json:"tilt_degrees" yaml:"tilt_degrees"`
 	Adjacent          Adjacency                      `json:"adjacent" yaml:"adjacent"`
 	Assembly          string                         `json:"assembly" yaml:"assembly"`
@@ -106,6 +109,7 @@ type Layer struct {
 }
 
 type InfiltrationSpec struct {
+	Airtightness     *AirtightnessMeasurement       `json:"airtightness,omitempty" yaml:"airtightness,omitempty"`
 	Mode             string                         `json:"mode" yaml:"mode"` // ach_natural, ach50, explicit
 	ACH              *float64                       `json:"ach,omitempty" yaml:"ach,omitempty"`
 	ACH50            *float64                       `json:"ach50,omitempty" yaml:"ach50,omitempty"`
@@ -115,7 +119,24 @@ type InfiltrationSpec struct {
 }
 
 type VentilationSpec struct {
-	Airflow   *units.Airflow                 `json:"airflow_m3_s" yaml:"airflow_m3_s"`
-	RoomRates map[string]units.Airflow       `json:"room_rates_m3_s,omitempty" yaml:"room_rates_m3_s,omitempty"`
-	Evidence  map[string]provenance.Evidence `json:"evidence" yaml:"evidence"`
+	HeatRecovery *HeatRecovery                  `json:"heat_recovery,omitempty" yaml:"heat_recovery,omitempty"`
+	Airflow      *units.Airflow                 `json:"airflow_m3_s" yaml:"airflow_m3_s"`
+	RoomRates    map[string]units.Airflow       `json:"room_rates_m3_s,omitempty" yaml:"room_rates_m3_s,omitempty"`
+	Evidence     map[string]provenance.Evidence `json:"evidence" yaml:"evidence"`
+}
+
+// Airtightness preserves an independently measured or assumed property, even
+// when the selected airflow mode uses explicit flow. No conversion is implicit.
+type AirtightnessMeasurement struct {
+	AirChangesPerHour *units.AirChangeRate `json:"air_changes_per_hour" yaml:"air_changes_per_hour"`
+	TestPressure      units.Pressure       `json:"test_pressure_pa" yaml:"test_pressure_pa"`
+	Evidence          provenance.Evidence  `json:"evidence" yaml:"evidence"`
+}
+
+// HeatRecovery preserves device properties for later methodologies. designload
+// currently reports this as unsupported rather than silently ignoring it.
+type HeatRecovery struct {
+	SensibleEfficiency *float64            `json:"sensible_efficiency,omitempty" yaml:"sensible_efficiency,omitempty"`
+	LatentEfficiency   *float64            `json:"latent_efficiency,omitempty" yaml:"latent_efficiency,omitempty"`
+	Evidence           provenance.Evidence `json:"evidence" yaml:"evidence"`
 }

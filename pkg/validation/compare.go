@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/provenance"
 	"math"
 	"sort"
 )
@@ -29,13 +30,14 @@ type Difference struct {
 	Pass               bool     `json:"pass"`
 }
 type Report struct {
-	Generator         string       `json:"reference_generator"`
-	GeneratorVersion  string       `json:"reference_generator_version"`
-	FixtureSHA256     string       `json:"fixture_sha256"`
-	RelativeTolerance float64      `json:"relative_tolerance"`
-	AbsoluteTolerance float64      `json:"absolute_tolerance_w"`
-	Differences       []Difference `json:"differences"`
-	Pass              bool         `json:"pass"`
+	Methodology       provenance.Methodology `json:"methodology"`
+	Generator         string                 `json:"reference_generator"`
+	GeneratorVersion  string                 `json:"reference_generator_version"`
+	FixtureSHA256     string                 `json:"fixture_sha256"`
+	RelativeTolerance float64                `json:"relative_tolerance"`
+	AbsoluteTolerance float64                `json:"absolute_tolerance_w"`
+	Differences       []Difference           `json:"differences"`
+	Pass              bool                   `json:"pass"`
 }
 
 func Hash(data []byte) string { return fmt.Sprintf("%x", sha256.Sum256(data)) }
@@ -59,7 +61,7 @@ func Compare(result *loads.Result, fixture []byte, ref Reference, relative, abso
 	}
 	walk(result.Heating)
 	walk(result.Cooling)
-	r := &Report{Generator: ref.Generator, GeneratorVersion: ref.GeneratorVersion, FixtureSHA256: ref.FixtureSHA256, RelativeTolerance: relative, AbsoluteTolerance: absolute, Pass: true}
+	r := &Report{Methodology: result.Methodology, Generator: ref.Generator, GeneratorVersion: ref.GeneratorVersion, FixtureSHA256: ref.FixtureSHA256, RelativeTolerance: relative, AbsoluteTolerance: absolute, Pass: true}
 	keys := make([]string, 0, len(ref.Metrics))
 	for k := range ref.Metrics {
 		keys = append(keys, k)

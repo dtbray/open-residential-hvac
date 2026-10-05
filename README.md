@@ -1,7 +1,8 @@
 # Open Residential HVAC Engine
 
-A transparent residential heating and cooling design-load calculator, implemented
-as a Go library with a CLI and Wails/Svelte desktop editor. Each result has stable
+A standards-neutral residential thermal-load engine, implemented as a Go library
+with a CLI and Wails/Svelte desktop editor. Its initial `designload` model provides
+transparent room and whole-building heating/cooling design loads. Each result has stable
 IDs, equations, inputs, units, sources, assumptions, and explicit aggregation.
 
 **Development preview. The complete v0.1 acceptance gate has not been met.**
@@ -28,15 +29,19 @@ Go 1.24 or newer:
 ```sh
 go test ./...
 go build -o bin/hvac ./cmd/hvac
-bin/hvac validate testdata/buildings/ranch.yaml
-bin/hvac load testdata/buildings/ranch.yaml
-bin/hvac load testdata/buildings/ranch.yaml --room "Bedroom"
-bin/hvac load testdata/buildings/ranch.yaml --format json > result.json
-bin/hvac explain testdata/buildings/ranch.yaml --node room/bedroom/heating/envelope/bedroom-west
+bin/hvac validate testdata/designload/buildings/ranch.yaml
+bin/hvac load testdata/designload/buildings/ranch.yaml
+bin/hvac load testdata/designload/buildings/ranch.yaml --model designload --units ip
+bin/hvac load testdata/designload/buildings/ranch.yaml --room "Bedroom"
+bin/hvac load testdata/designload/buildings/ranch.yaml --format json > result.json
+bin/hvac explain testdata/designload/buildings/ranch.yaml --node room/bedroom/heating/envelope/bedroom-west
 ```
 
-Text heat-flow output uses Btu/h. JSON output uses watts and includes room results
-and complete trees. `--verbose` prints the equations and input provenance.
+Text heat-flow output defaults to watts; use `--units ip` for Btu/h. JSON always
+uses canonical SI and includes methodology metadata, room results and complete
+trees. `--model designload` explicitly selects the only supported model.
+`--verbose` prints equations and input provenance. An isolated JSON `--node`
+response contains `methodology` and `node` fields together.
 Room selection calculates the whole building first, retaining its airflow
 allocation, then selects that room's results. Validation errors exit nonzero;
 `--format json` produces structured errors on stderr.
@@ -46,7 +51,7 @@ allocation, then selects that room's results. Validation errors exit nonzero;
 Projects use strict versioned JSON or YAML, with explicit SI field names. Unknown
 fields and unsupported schema versions are errors. Required engineering inputs
 must be present; zero is a permitted explicit input. A complete, synthetic
-two-room example is [ranch.yaml](testdata/buildings/ranch.yaml).
+two-room example is [ranch.yaml](testdata/designload/buildings/ranch.yaml).
 
 ```yaml
 version: 1
@@ -77,11 +82,15 @@ insulation values, infiltration rates, or climate design conditions.
 ```go
 p, err := project.Open("house.yaml")
 if err != nil { return err }
-result, err := loads.Calculate(p.Building)
+model := designload.New()
+result, err := model.Calculate(p.Building, p.Building.Design)
 ```
 
-Calculations need no network or external processes. Serialization and adapters
-are separate from the physical building model. See [architecture](docs/architecture.md).
+Explicit conditions can instead come from another physical climate source; the
+model uses those conditions without mutating the building's stored project design.
+Calculations need no network or external processes. Shared physics and result types
+are independent of model policy. See [architecture](docs/architecture.md) and the
+[international architecture addendum](docs/international-architecture.md).
 
 ## Desktop
 
@@ -127,4 +136,3 @@ sensible load and does not reproduce time-dependent cooling sizing methods.
 Read [methodology](docs/methodology.md), [provenance](docs/provenance.md),
 [validation status](docs/validation.md), and [the MVP specification](docs/mvp-specification.md)
 before interpreting these development results.
-

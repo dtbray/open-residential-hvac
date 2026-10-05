@@ -22,8 +22,8 @@ fixtures['multi-room-ranch']=base();const ranch=fixtures['multi-room-ranch'].bui
 for(const r of ranch.zones[0].rooms){r.occupants=1;r.occupant_sensible_w_per_person=70;r.occupant_latent_w_per_person=45;r.lighting_w=50;r.internal_sensible_w=80;r.internal_latent_w=10;r.ceilings=[{...surface(r.id+'-ceiling',r.floor_area_m2),tilt_degrees:0}];r.floors=[{...surface(r.id+'-floor',r.floor_area_m2,'wall','conditioned'),tilt_degrees:180}];r.windows=[{...surface(r.id+'-window',3,'glass'),parent_surface:r.id+'-west',shgc:0.4,incident_solar_w_m2:350,shading_factor:0.8,evidence:{area_m2:evidence,shgc:evidence,incident_solar_w_m2:evidence,shading_factor:evidence}}];r.doors=[{...surface(r.id+'-door',2),parent_surface:r.id+'-west'}];}
 fixtures['two-story']=structuredClone(fixtures['multi-room-ranch']);const upper=fixtures['two-story'].building.zones[0].rooms.pop();fixtures['two-story'].building.zones.push({id:'upper',name:'Upper Zone',rooms:[upper]});
 fixtures['attic-duct-house']=structuredClone(fixtures['multi-room-ranch']);fixtures['attic-duct-house'].building.name='Attic boundary fixture (duct losses unsupported)';for(const r of fixtures['attic-duct-house'].building.zones[0].rooms){r.ceilings[0].adjacent='unconditioned_attic';r.ceilings[0].heating_adjacent_db_c=0;r.ceilings[0].cooling_adjacent_db_c=45;}
-fs.mkdirSync(path.join(root,'testdata/buildings'),{recursive:true});
-for(const [name,p]of Object.entries(fixtures))fs.writeFileSync(path.join(root,'testdata/buildings',name+'.json'),JSON.stringify(p,null,2)+'\n');
+fs.mkdirSync(path.join(root,'testdata/designload/buildings'),{recursive:true});
+for(const [name,p]of Object.entries(fixtures))fs.writeFileSync(path.join(root,'testdata/designload/buildings',name+'.json'),JSON.stringify(p,null,2)+'\n');
 fs.mkdirSync(path.join(root,'app/frontend/src'),{recursive:true});fs.writeFileSync(path.join(root,'app/frontend/src/example.json'),JSON.stringify(fixtures['multi-room-ranch'],null,2)+'\n');
 console.log('Generated',Object.keys(fixtures).length,'synthetic fixtures.');
 

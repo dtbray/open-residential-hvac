@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-package loads
+package designload
 
 import (
 	"bytes"
 	"encoding/json"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/building"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/provenance"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/units"
@@ -15,7 +16,7 @@ import (
 
 func fixture(t *testing.T, name string) building.Building {
 	t.Helper()
-	p, e := project.Open("../../testdata/buildings/" + name + ".json")
+	p, e := project.Open("../../../testdata/designload/buildings/" + name + ".json")
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -28,7 +29,7 @@ func equal(t *testing.T, got, want float64) {
 	}
 }
 func TestHandConduction(t *testing.T) {
-	r, e := Calculate(fixture(t, "wall-conduction-only"))
+	r, e := calculate(fixture(t, "wall-conduction-only"))
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -37,20 +38,20 @@ func TestHandConduction(t *testing.T) {
 	equal(t, float64(r.CoolingLatent), 0)
 }
 func TestOpeningsAndSolar(t *testing.T) {
-	r, e := Calculate(fixture(t, "high-window-area"))
+	r, e := calculate(fixture(t, "high-window-area"))
 	if e != nil {
 		t.Fatal(e)
 	}
 	equal(t, float64(r.HeatingLoad), (0.4*5+2*15)*35)
 	equal(t, float64(r.CoolingSensible), (0.4*5+2*15)*11+15*400*0.5*0.8)
-	n := Find(r.Cooling, "room/living/cooling/sensible/envelope/living-west")
+	n := loads.Find(r.Cooling, "room/living/cooling/sensible/envelope/living-west")
 	if n == nil {
 		t.Fatal("wall node missing")
 	}
 	equal(t, float64(n.Value), 0.4*5*11)
 }
 func TestAllFixturesAndAggregation(t *testing.T) {
-	files, _ := filepath.Glob("../../testdata/buildings/*.json")
+	files, _ := filepath.Glob("../../../testdata/designload/buildings/*.json")
 	if len(files) < 10 {
 		t.Fatal("fixture matrix missing")
 	}
@@ -60,7 +61,7 @@ func TestAllFixturesAndAggregation(t *testing.T) {
 			if e != nil {
 				t.Fatal(e)
 			}
-			r, e := Calculate(p.Building)
+			r, e := calculate(p.Building)
 			if e != nil {
 				t.Fatal(e)
 			}
@@ -75,8 +76,8 @@ func TestAllFixturesAndAggregation(t *testing.T) {
 			equal(t, float64(r.CoolingLatent), float64(l))
 			equal(t, float64(r.CoolingLoad), float64(s+l))
 			ids := map[string]bool{}
-			var check func(ResultNode)
-			check = func(n ResultNode) {
+			var check func(loads.ResultNode)
+			check = func(n loads.ResultNode) {
 				if ids[n.ID] {
 					t.Fatal("duplicate result ID", n.ID)
 				}
@@ -102,7 +103,7 @@ func TestAllFixturesAndAggregation(t *testing.T) {
 			check(r.Heating)
 			check(r.Cooling)
 			a, _ := json.Marshal(r)
-			r2, e := Calculate(p.Building)
+			r2, e := calculate(p.Building)
 			if e != nil {
 				t.Fatal(e)
 			}
@@ -117,7 +118,7 @@ func TestRejectsInvalidInputs(t *testing.T) {
 	for _, mutate := range []func(*building.Building){func(b *building.Building) { b.Design.Cooling.OutdoorDB = nil }, func(b *building.Building) { b.Zones[0].Rooms[0].Walls[0].Adjacent = building.Ground }, func(b *building.Building) { b.Zones[0].Rooms[0].Windows[0].ParentSurface = "missing" }, func(b *building.Building) { b.Zones[0].Rooms[0].Windows[0].Area = 100 }, func(b *building.Building) { b.Assemblies[0].UFactor = nil }, func(b *building.Building) { b.Design.Cooling.IndoorRH = nil }, func(b *building.Building) { b.Zones[0].Rooms[0].Lighting = nil }, func(b *building.Building) { b.Zones[0].Rooms[0].Volume = units.Volume(math.NaN()) }, func(b *building.Building) { b.Zones[0].Rooms[0].Walls[0].ID = b.ID }} {
 		b := fixture(t, "high-window-area")
 		mutate(&b)
-		if _, e := Calculate(b); e == nil {
+		if _, e := calculate(b); e == nil {
 			t.Fatal("invalid engineering input accepted")
 		}
 	}
@@ -125,7 +126,7 @@ func TestRejectsInvalidInputs(t *testing.T) {
 func TestAssumptionsSurvive(t *testing.T) {
 	b := fixture(t, "simple-box")
 	b.Assemblies[0].Evidence.Assumptions = []provenance.Assumption{{ID: "insulation", Description: "Assumed assembly resistance"}}
-	r, e := Calculate(b)
+	r, e := calculate(b)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -143,7 +144,7 @@ func TestNoInputMutation(t *testing.T) {
 	b := fixture(t, "multi-room-ranch")
 	b.Zones[0].Rooms[0].Windows[0].Adjacent = ""
 	before, _ := json.Marshal(b)
-	if _, e := Calculate(b); e != nil {
+	if _, e := calculate(b); e != nil {
 		t.Fatal(e)
 	}
 	after, _ := json.Marshal(b)
@@ -153,13 +154,13 @@ func TestNoInputMutation(t *testing.T) {
 }
 
 func BenchmarkRanch(b *testing.B) {
-	p, e := project.Open("../../testdata/buildings/multi-room-ranch.json")
+	p, e := project.Open("../../../testdata/designload/buildings/multi-room-ranch.json")
 	if e != nil {
 		b.Fatal(e)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if _, e := Calculate(p.Building); e != nil {
+		if _, e := calculate(p.Building); e != nil {
 			b.Fatal(e)
 		}
 	}
@@ -168,7 +169,9 @@ func BenchmarkRanch(b *testing.B) {
 func TestMissingOccupancyIsNotZero(t *testing.T) {
 	b := fixture(t, "simple-box")
 	b.Zones[0].Rooms[0].Occupants = nil
-	if _, err := Calculate(b); err == nil {
+	if _, err := calculate(b); err == nil {
 		t.Fatal("missing occupant count silently treated as zero")
 	}
 }
+
+func calculate(b building.Building) (*loads.Result, error) { return New().Calculate(b, b.Design) }

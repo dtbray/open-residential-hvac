@@ -5,16 +5,18 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"io"
 	"strings"
 
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/units"
 )
 
 func Run(args []string, out, errOut io.Writer) int {
 	if len(args) < 2 {
-		fmt.Fprintln(errOut, "usage: hvac validate|load|explain PROJECT.{json,yaml} [--room ID_OR_NAME] [--format text|json] [--node ID] [--verbose]")
+		fmt.Fprintln(errOut, "usage: hvac validate|load|explain PROJECT.{json,yaml} [--model designload] [--units si|ip] [--room ID_OR_NAME] [--format text|json] [--node ID] [--verbose]")
 		return 2
 	}
 	command, path := args[0], args[1]
@@ -28,6 +30,8 @@ func Run(args []string, out, errOut io.Writer) int {
 	room := f.String("room", "", "room ID or unique name")
 	node := f.String("node", "", "stable result node ID")
 	verbose := f.Bool("verbose", false, "display all calculations")
+	modelID := f.String("model", designload.ID, "calculation model (designload)")
+	unitSystem := f.String("units", "si", "text heat-flow units: si (W) or ip (Btu/h); JSON always uses SI")
 	if err := f.Parse(args[2:]); err != nil {
 		return 2
 	}
@@ -35,22 +39,29 @@ func Run(args []string, out, errOut io.Writer) int {
 		fmt.Fprintln(errOut, "invalid arguments or output format")
 		return 2
 	}
+	if *modelID != designload.ID {
+		return failure(fmt.Errorf("unsupported calculation model %q; supported: designload", *modelID), *format, errOut)
+	}
+	if *unitSystem != "si" && *unitSystem != "ip" {
+		fmt.Fprintln(errOut, "units must be si or ip")
+		return 2
+	}
 	p, err := project.Open(path)
 	if err != nil {
 		return failure(err, *format, errOut)
 	}
 	if command == "validate" {
-		if e := loads.Validate(p.Building); len(e) > 0 {
+		if e := designload.New().Validate(p.Building, p.Building.Design); len(e) > 0 {
 			return failure(e, *format, errOut)
 		}
 		if *format == "json" {
-			writeJSON(out, map[string]any{"valid": true, "version": p.Version})
+			writeJSON(out, map[string]any{"valid": true, "version": p.Version, "methodology": designload.Methodology()})
 		} else {
 			fmt.Fprintln(out, "Valid project:", p.Building.Name)
 		}
 		return 0
 	}
-	r, err := loads.Calculate(p.Building)
+	r, err := designload.New().Calculate(p.Building, p.Building.Design)
 	if err != nil {
 		return failure(err, *format, errOut)
 	}
@@ -84,9 +95,10 @@ func Run(args []string, out, errOut io.Writer) int {
 			return failure(fmt.Errorf("unknown result node %q", *node), *format, errOut)
 		}
 		if *format == "json" {
-			writeJSON(out, n)
+			writeJSON(out, map[string]any{"methodology": r.Methodology, "node": n})
 		} else {
-			tree(out, *n, "", true)
+			fmt.Fprintf(out, "Calculation method: %s %s (%s)\n", r.Methodology.Name, r.Methodology.Version, r.Methodology.ID)
+			tree(out, *n, "", true, *unitSystem)
 		}
 		return 0
 	}
@@ -94,15 +106,18 @@ func Run(args []string, out, errOut io.Writer) int {
 		writeJSON(out, r)
 		return 0
 	}
-	fmt.Fprintf(out, "Heating Load: %.0f Btu/h\nCooling Sensible: %.0f Btu/h\nCooling Latent: %.0f Btu/h\nCooling Load: %.0f Btu/h\n", r.HeatingLoad.Btuh(), r.CoolingSensible.Btuh(), r.CoolingLatent.Btuh(), r.CoolingLoad.Btuh())
+	value := func(q units.HeatFlow) float64 { return heatValue(q, *unitSystem) }
+	unit := heatUnit(*unitSystem)
+	fmt.Fprintf(out, "Calculation method: %s %s (%s)\n", r.Methodology.Name, r.Methodology.Version, r.Methodology.ID)
+	fmt.Fprintf(out, "Heating design load: %.1f %s\nSensible cooling load: %.1f %s\nLatent cooling load: %.1f %s\nCooling design load: %.1f %s\n", value(r.HeatingLoad), unit, value(r.CoolingSensible), unit, value(r.CoolingLatent), unit, value(r.CoolingLoad), unit)
 	for _, v := range r.Rooms {
-		fmt.Fprintf(out, "  %s: heating %.0f; cooling sensible %.0f; latent %.0f Btu/h\n", v.Name, v.HeatingLoad.Btuh(), v.CoolingSensible.Btuh(), v.CoolingLatent.Btuh())
+		fmt.Fprintf(out, "  %s: heating %.1f; cooling sensible %.1f; latent %.1f %s\n", v.Name, value(v.HeatingLoad), value(v.CoolingSensible), value(v.CoolingLatent), unit)
 	}
 	if command == "explain" || *verbose {
-		tree(out, r.Heating, "", true)
-		tree(out, r.Cooling, "", true)
+		tree(out, r.Heating, "", true, *unitSystem)
+		tree(out, r.Cooling, "", true, *unitSystem)
 	} else {
-		tree(out, r.Cooling, "", false)
+		tree(out, r.Cooling, "", false, *unitSystem)
 	}
 	seen := map[string]bool{}
 	for _, root := range []loads.ResultNode{r.Heating, r.Cooling} {
@@ -136,8 +151,20 @@ func failure(err error, format string, w io.Writer) int {
 }
 
 func writeJSON(w io.Writer, v any) { e := json.NewEncoder(w); e.SetIndent("", "  "); _ = e.Encode(v) }
-func tree(w io.Writer, n loads.ResultNode, indent string, details bool) {
-	fmt.Fprintf(w, "%s%s: %.1f Btu/h [%s]\n", indent, n.Name, n.Value.Btuh(), n.ID)
+func heatValue(q units.HeatFlow, system string) float64 {
+	if system == "ip" {
+		return q.Btuh()
+	}
+	return float64(q)
+}
+func heatUnit(system string) string {
+	if system == "ip" {
+		return "Btu/h"
+	}
+	return "W"
+}
+func tree(w io.Writer, n loads.ResultNode, indent string, details bool, system string) {
+	fmt.Fprintf(w, "%s%s: %.1f %s [%s]\n", indent, n.Name, heatValue(n.Value, system), heatUnit(system), n.ID)
 	if details && len(n.Children) == 0 {
 		fmt.Fprintln(w, indent+"  Method: "+n.Method)
 		fmt.Fprintln(w, indent+"  Equation: "+n.Equation)
@@ -149,6 +176,6 @@ func tree(w io.Writer, n loads.ResultNode, indent string, details bool) {
 		}
 	}
 	for _, c := range n.Children {
-		tree(w, c, indent+strings.Repeat(" ", 2), details)
+		tree(w, c, indent+strings.Repeat(" ", 2), details, system)
 	}
 }

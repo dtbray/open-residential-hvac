@@ -1,6 +1,8 @@
-# Methodology: openphysics-steady-state-v1
+# Methodology
 
-This is a simultaneous design snapshot with immediate positive load contributions.
+## designload 0.1
+
+`designload` (Open Design Load), version 0.1, is a simultaneous design snapshot with immediate positive load contributions.
 It is not Manual J or a dynamic building simulation. Heat flow is W, area m²,
 temperature °C (differences K), pressure Pa, airflow m³/s, and humidity ratio kg
 water/kg dry air. Model version and result IDs are included in every calculation.
@@ -112,4 +114,3 @@ public-reference-based, or a labeled default. Omitted evidence classifies values
 as supplied project input; it does not introduce a numeric default. Assumptions
 on inputs are carried into leaf and aggregate nodes. This is qualitative tracking,
 not a probability distribution or statistical confidence interval.
-

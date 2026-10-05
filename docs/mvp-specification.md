@@ -5,6 +5,11 @@ It is an organized summary of that specification, with repository/license choice
 added on 2026-10-04. The project is a standalone AGPL-3.0-only repository;
 Forgejo is authoritative and GitHub is a public one-way distribution mirror.
 
+The [international architecture addendum](international-architecture.md) refines
+this contract: the engine is standards-neutral, shared physics and results are
+separate from calculation methodology, and the initial model is `designload`.
+Future national/dynamic models remain conceptual and do not expand v0.1 scope.
+
 ## Purpose and first principles
 
 Build a small, transparent open-source residential HVAC engineering engine focused
@@ -132,4 +137,3 @@ traceable; Go library, CLI and Wails share the engine; representative real
 OpenStudio comparisons and deviations are documented; no runtime simulation
 dependency or proprietary unauthorized material is present; no ACCA compliance
 claim is made; and deterministic CI runs pass.
-

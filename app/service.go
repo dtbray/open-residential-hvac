@@ -4,6 +4,7 @@ package app
 
 import (
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/loads"
+	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/models/designload"
 	"git.thomas-bray.com/thomas/open-residential-hvac/pkg/project"
 )
 
@@ -14,12 +15,12 @@ func (s *Service) Calculate(data string) (*loads.Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	return loads.Calculate(p.Building)
+	return designload.New().Calculate(p.Building, p.Building.Design)
 }
 func (s *Service) Validate(data string) (loads.ValidationErrors, error) {
 	p, err := project.Decode([]byte(data), "json")
 	if err != nil {
 		return nil, err
 	}
-	return loads.Validate(p.Building), nil
+	return designload.New().Validate(p.Building, p.Building.Design), nil
 }

@@ -6,6 +6,14 @@ import "math"
 
 // Temperatures are degrees Celsius. All other types are SI.
 type Temperature float64
+type TemperatureDifference float64 // K, not absolute Celsius temperature
+type MassFlow float64              // kg dry air/s
+type DryAirDensity float64         // kg dry air/m³ moist air
+type SpecificHeat float64          // J/(kg K)
+type SpecificEnergy float64        // J/kg
+type HumidityRatio float64         // kg water/kg dry air
+type AirChangeRate float64         // h⁻¹
+type Azimuth float64               // degrees clockwise from true north, [0,360)
 type Area float64
 type Volume float64
 type HeatFlow float64
